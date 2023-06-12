@@ -12,6 +12,7 @@ struct SignUpNameView: View {
     @ObservedObject var vm: SignUpViewModel
     @State private var next = true
     @Environment (\.dismiss) var dismiss
+    
     var body: some View {
         
         VStack(alignment: .leading) {
@@ -42,6 +43,7 @@ struct SignUpNameView: View {
                     ButtonLabelView(buttonLabel: AppConstants.ButtonLabels.next)
                         .cornerRadius(18)
                 })
+                // disable the button when all textfields are not correctly filled
                 .opacity(vm.disableNextBtn() ? 0.5 : 1)
                 .disabled(vm.disableNextBtn())
             }
@@ -69,6 +71,8 @@ struct SignUpNameView: View {
 
 struct SignUpNameView_Previews: PreviewProvider {
     static var previews: some View {
-        SignUpNameView(vm: SignUpViewModel())
+        NavigationStack {
+            SignUpNameView(vm: SignUpViewModel())
+        }
     }
 }

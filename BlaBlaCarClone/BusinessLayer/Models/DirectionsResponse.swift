@@ -8,13 +8,30 @@
 import Foundation
 
 struct DirectionsResponse: Codable {
-    
-    var routes: [Routes]
+    var routes: [Routes]?
 }
 
 struct Routes: Codable {
-    var overview_polyline: Points
+    var legs: [Legs]
+    var overviewPolyline: Points
+    
+    enum CodingKeys: String, CodingKey {
+        case legs
+        case overviewPolyline = "overview_polyline"
+    }
 }
+
+struct Legs: Codable {
+    var distance: DistDurDetails
+    var duration: DistDurDetails
+}
+
+struct DistDurDetails: Codable {
+    var value: Int?
+    var text: String
+    
+}
+
 struct Points: Codable {
     var points: String
 }

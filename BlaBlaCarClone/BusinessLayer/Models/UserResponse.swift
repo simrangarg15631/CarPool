@@ -15,19 +15,20 @@ struct Status: Codable {
     var code: Int
     var message: String?
     var error: String?
-    var data: Dataresponse?
     var imageUrl: URL?
-    
+    var data: DataResponse?
+   
     enum CodingKeys: String, CodingKey {
         case code
         case message
         case error
-        case data
         case imageUrl = "image_url"
+        case data
+        
     }
 }
 
-struct Dataresponse: Codable {
+struct DataResponse: Codable {
     var id: Int
     var email: String
     var createdAt: String
@@ -41,7 +42,8 @@ struct Dataresponse: Codable {
     var postalAddress: String?
     var activated: Bool?
     var sessionKey: String?
-    var averageRating: String?
+    var averageRating: Double?
+    var phoneVerified: Bool?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -58,12 +60,13 @@ struct Dataresponse: Codable {
         case activated
         case sessionKey = "session_key"
         case averageRating = "average_rating"
+        case phoneVerified = "phone_verified"
     }
 }
 
 extension UserResponse {
     static let userResponse = UserResponse(
-        status: Status(code: 0, data: Dataresponse(id: 0,
+        status: Status(code: 0, data: DataResponse(id: 0,
                                                    email: "simran24@gmail.com",
                                                    createdAt: "2023-05-22T09:46:19.918Z",
                                                    firstName: "Simran",
@@ -74,5 +77,5 @@ extension UserResponse {
                                                    bio: "adventure seeker",
                                                    postalAddress: "mohali",
                                                    activated: true,
-                                                   averageRating: "4.0")))
+                                                   averageRating: 4.0)))
 }

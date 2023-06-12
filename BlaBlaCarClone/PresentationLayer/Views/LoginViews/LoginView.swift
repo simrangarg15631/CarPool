@@ -32,13 +32,14 @@ struct LoginView: View {
                 
                 Spacer()
                 
+                // Forgot Password
                 Button {
                     vm.presenSheet.toggle()
                 } label: {
                     Text(AppConstants.ButtonLabels.forgotPassword)
                         .font(.subheadline)
                         .bold()
-                        .foregroundColor(.red)
+                        .foregroundColor(.accentColor)
                 }
             }
             .padding(.top, 8)
@@ -116,8 +117,12 @@ struct LoginView: View {
                     .font(.headline)
             }
         }
-        .fullScreenCover(isPresented: $vm.presenSheet) {
+        .navigationDestination(isPresented: $vm.presenSheet) {
             EnterEmailView()
+        }
+        .onAppear {
+            vm.email = String()
+            vm.password = String()
         }
     }
 }

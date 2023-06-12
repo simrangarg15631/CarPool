@@ -9,11 +9,18 @@ import Foundation
 
 struct AppConstants {
     
+    struct DirectionsApi {
+        
+        static let baseUrl = "https://maps.googleapis.com/maps/api/directions/json"
+        static let ApiKey = "AIzaSyDUzn63K64-sXadyIwRJExCfMaicagwGq4"
+    }
+    
     struct ApiUrls {
-        static let baseUrl = "https://b16b-112-196-113-2.ngrok-free.app"
+        
+        static let baseUrl = "https://762b-112-196-113-2.ngrok-free.app"
         static let users = "/users"
         static let logInEndPoint = "/users/sign_in"
-        static let checkEmailEndPoint = "/email_check?email="
+        static let checkEmailEndPoint = "/email_check"
         static let sendOTP = "/phone"
         static let verifyPhone = "/verify"
         static let search = "/search"
@@ -21,10 +28,36 @@ struct AppConstants {
         static let vehicles = "/vehicles"
         static let updatePassword = "/update_password"
         static let signOut = "/users/sign_out"
+        static let publish = "/publishes"
+        static let bookRide = "/book_publish"
+        static let forgotPass = "/send_otp"
+        static let verifyOtp = "/verify_otp"
+        static let passwordReset = "/password_reset"
+        static let bookedRides = "/booked_publishes"
+        static let cancelBooking = "/cancel_booking"
+        static let cancelPublish = "/cancel_publish"
     }
     
     struct ApiKeys {
+        static let email = "email"
         static let image = "image"
+        static let sourceLon = "source_longitude"
+        static let sourceLat = "source_latitude"
+        static let destLon = "destination_longitude"
+        static let destLat = "destination_latitude"
+        static let passCount = "passengers_count"
+        static let date = "date"
+        static let orderBy = "order_by"
+    }
+    
+    struct DateTimeFormat {
+        static let hourMin = "hh:mm a"
+        static let yearMonthDate = "yyyy-MM-dd"
+        static let dateTime = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        static let monthYear = "MMM yyyy"
+        static let dayDateMonth = "EEE d MMM"
+        static let dateMonYearTime = "dd MMM yyyy, hh:mm a"
+        static let dateMonYear = "dd MMM yyyy"
     }
     
     struct AppHeadings {
@@ -39,13 +72,13 @@ struct AppConstants {
         static let selectDate = "When are you going?"
         static let rideAtLowPrice = "Your Pick of rides at low prices"
         static let noOfSeats = "Number of seats to book"
-        static let filter = "Filter"
+        
         static let sortBy = "Sort by"
         static let depTime = "Departure Time"
         static let amenities = "Amenities"
         static let rideDetails = "Ride Details"
         static let tripInfo = "Trip info"
-        static let ridePreferences = "Ride Preferences"
+        static let aboutRide = "About Ride"
         static let confirmRide = "Confirm Ride"
         static let profile = "Profile"
         static let personalDetails = "Personal Details"
@@ -54,7 +87,15 @@ struct AppConstants {
         static let editProfilePic = "Don't wear sunglasses, look straight ahead and make sure you're alone."
         static let vehicleInfo = "Vehicle Info"
         static let editVehicle = "Edit Vehicle"
-        
+        static let routeDetails = "Route Details"
+        static let NoRides = "No rides yet."
+        static let enterOtp = "Please enter the OTP sent to your email"
+        static let inbox = "Inbox"
+        static let myRides = "My Rides"
+        static let ridePlans = "Ride Plan"
+        static let editPublication = "Edit your publication"
+        static let itineraryDetails = "Itinerary details"
+        static let editPrice = "Edit price per seat"
     }
     
     struct AppStrings {
@@ -87,20 +128,11 @@ struct AppConstants {
         static let goingTo = "Going to"
         static let today = "Today"
         static let searchLoc = "Search Location"
-        static let earlyDep = "Earliest Departure"
-        static let lowPrice = "Lowest Price"
-        static let closeDep = "Close to departure point"
-        static let closArr = "Close to arrival point"
-        static let shortRide = "Shortest ride"
-        static let before6 = "Before 06:00"
-        static let after6 = "06:00 - 12:00"
-        static let after12 = "12:01 - 18:00"
-        static let after6pm = "After 18:00"
-        static let verifyprofile = "Verified Profile"
+        static let filter = "Filter by:"
+        static let departure = "Departure"
+        static let price = "Price"
         static let max2 = "Max. 2 in the back"
         static let insBook = "Instant Booking"
-        static let smokeAllow = "Smoking allowed"
-        static let petsAllow = "Pets allowed"
         static let passenger = "passenger"
         static let seatsLeft = "Seats left"
         static let pricePerSeat = "Price for one seat"
@@ -112,6 +144,7 @@ struct AppConstants {
         static let ratings = "Ratings"
         static let deleteAccount = "Delete Account"
         static let changePassword = "Change Password"
+        static let resetPassword = "Reset Password"
         static let aboutYou = "About You"
         static let vehicles = "Vehicles"
         static let verifyYourProfile = "Verify your Profile"
@@ -139,6 +172,38 @@ Eg; Flexible about when and where to meet? Got limited space in the boat?Need pa
         static let priceSeat = "Price per seat"
         static let availableSeats = "Available Seats"
         static let rs = "Rs."
+        static let select = "Select"
+        static let type100 = "Type about 100 words here..."
+        static let totalDistance = "Total Distance"
+        static let estimatedTime = "Estimated Time"
+        static let orderByPrice = "2"
+        static let orderByTime = "1"
+        static let futureTravelPlans = "Your future travel plans will appear here."
+        static let findPerfectRide = """
+Find the perfect ride from thousands of destinations, or publish to share your travel costs.
+"""
+        static let noMessages = "No messages right now. Book or offer a ride to contact someone."
+        static let pending = "pending"
+        static let upcoming = "UPCOMING"
+        static let completed = "completed"
+        static let cancelled = "cancelled"
+        static let cancelBooking = "cancel booking"
+        static let seatsBooked = "Seats booked"
+        static let noPassengers = "No passengers for this ride"
+        static let editPublication = "Edit your publication"
+        static let confirmBooking = "confirm booking"
+        static let rideCompleted = "ride completed"
+        static let booked = "Booked"
+        static let published = "Published"
+        static let passengers = "Passengers"
+        static let noRidesBooked = "No rides booked yet."
+        static let noRidesPublished = "No rides published yet."
+        static let phoneVerified = "Confirmed Phone Number"
+        static let date = "Date"
+        static let time = "Time"
+        static let maxPriceLimit = "This is a max price limit to maintain the spirit of carpooling."
+        static let coTravellers = "Co-travellers"
+        static let rideDetails = "Ride Details"
     }
     
     // MARK: - Button Labels
@@ -171,7 +236,7 @@ Eg; Flexible about when and where to meet? Got limited space in the boat?Need pa
         static let confirmMyPhone = "Confirm phone"
         static let save = "Save"
         static let veify = "Verify"
-        static let forgotPassword = "Forgot Password"
+        static let forgotPassword = "Forgot Password?"
         static let submit = "Submit"
         static let editPhoto = "Edit Photo"
         static let addPhoto = "Add Photo"
@@ -181,7 +246,11 @@ Eg; Flexible about when and where to meet? Got limited space in the boat?Need pa
         static let changePassword = "Change Password"
         static let publishRide = "Publish Ride"
         static let proceed = "Proceed"
-        
+        static let cancelBook = "Cancel Booking"
+        static let no = "No"
+        static let cancelRide = "Cancel your ride"
+        static let duplicateRide = "Duplicate your publication"
+        static let publishReturn = "Publish your return ride"
     }
     
     // MARK: - App Images
@@ -221,8 +290,12 @@ Eg; Flexible about when and where to meet? Got limited space in the boat?Need pa
         static let distance = "point.topleft.down.curvedto.point.filled.bottomright.up"
         static let rideBook = "RideBook"
         static let checkmarkCircle = "checkmark.circle"
+        static let filledCheckmark = "checkmark.circle.fill"
         static let personCircle = "person.circle.fill"
         static let chevronDown = "chevron.down"
+        static let noRides = "NoRides"
+        static let myRides = "MyRides"
+        static let inbox = "Inbox"
+        static let exclamation = "exclamationmark.circle"
     }
-
 }

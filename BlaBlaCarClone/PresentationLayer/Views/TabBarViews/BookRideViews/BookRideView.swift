@@ -18,13 +18,17 @@ struct BookRideView: View {
             // Background Image
             VStack {
                 Image(AppConstants.AppImages.carpool)
+                    .resizable()
                     .ignoresSafeArea()
                     .frame(maxHeight: 400)
                 
                 Spacer()
+                
+                if bookRideVm.isLoading {
+                    ProgressView()
+                        .padding(.bottom, 20)
+                }
             }
-            .background(.white)
-            
             // Main Box
             VStack {
                 
@@ -53,6 +57,7 @@ struct BookRideView: View {
                         
                             Button {
                                 swap(&bookRideVm.startlocation, &bookRideVm.destination)
+                                swap(&bookRideVm.startCoordinates, &bookRideVm.destCoordinates)
                             }label: {
                                 Image(systemName: AppConstants.AppImages.upDownArrow)
                                     .font(.title)
@@ -88,18 +93,30 @@ struct BookRideView: View {
                 .padding()
                 
                 // Search button
-                NavigationLink {
-                    // Navigate to View Showing car rides based on search
-                    CarRideListView(homeVm: bookRideVm)
+                Button {
+                    bookRideVm.searchRide()
                 }label: {
                     ButtonLabelView(buttonLabel: AppConstants.ButtonLabels.search)
                 }
+                .disabled(bookRideVm.disableSearch())
             }
             .frame(maxWidth: UIScreen.main.bounds.width - 50, maxHeight: 260)
             .background(.white)
             .cornerRadius(20)
             .shadow(color: Color.gray, radius: 2)
-            .navigationBarBackButtonHidden(true)
+        }
+        .navigationBarBackButtonHidden(true)
+        .navigationDestination(isPresented: $bookRideVm.isSuccess, destination: {
+            // Navigate to View Showing car rides based on search
+            CarRideListView(homeVm: bookRideVm)
+        })
+        .alert("", isPresented: $bookRideVm.hasError) {
+            Button(AppConstants.ButtonLabels.ok, role: .cancel) {}
+        } message: {
+            if let error = bookRideVm.errorMessage {
+                Text(error.localizedDescription)
+                    .font(.headline)
+            }
         }
         // On click search location is presented
         .fullScreenCover(isPresented: $bookRideVm.isSearchPresented, content: {
@@ -117,6 +134,16 @@ struct BookRideView: View {
         .fullScreenCover(isPresented: $bookRideVm.isSeatsPresented, content: {
             SeatsView(noOfSeats: $bookRideVm.noOfSeats)
         })
+        .onAppear {
+            if bookRideVm.dismiss {
+                bookRideVm.startlocation = String()
+                bookRideVm.destination = String()
+                bookRideVm.noOfSeats = 1
+                bookRideVm.date = Date()
+            }
+            bookRideVm.dismiss = false
+            
+        }
     }
 }
 

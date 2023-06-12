@@ -36,7 +36,8 @@ struct MapView: UIViewRepresentable {
         var idx: Int = 0
         var latitude: Double = 0
         var longitude: Double = 0
-        while (idx < encodedString.lengthOfBytes(using: String.Encoding.utf8)) {
+        
+        while idx < encodedString.lengthOfBytes(using: String.Encoding.utf8) {
             var byte = 0
             var res = 0
             var shift = 0
@@ -60,7 +61,8 @@ struct MapView: UIViewRepresentable {
             let deltaLon = ((res & 1) != 0x0 ? ~(res >> 1) : (res >> 1))
             longitude += Double(deltaLon)
 
-            myRoutePoints.append(CLLocation(latitude: Double(latitude * 1E-5), longitude: Double(longitude * 1E-5)).coordinate)
+            myRoutePoints.append(CLLocation(latitude: Double(latitude * 1E-5),
+                                            longitude: Double(longitude * 1E-5)).coordinate)
         }
         return myRoutePoints
     }

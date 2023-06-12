@@ -10,6 +10,8 @@ import SwiftUI
 struct CarRideCardView: View {
     
     @StateObject var cardVm = CarRideCardViewModel()
+    var ride: RideDetails
+    var seats: Int
     
     var body: some View {
         
@@ -18,77 +20,69 @@ struct CarRideCardView: View {
             HStack(spacing: 10) {
                 
                 VStack(alignment: .leading, spacing: 10) {
-                    Text("Dep Time")
+                    
+                    Text(DateFormatterUtil.shared.datetimeFormat(
+                        dateTime: ride.publish.time,
+                        format: AppConstants.DateTimeFormat.hourMin))
                         .font(.headline)
-                    Text("Time Taken")
-                        .font(.caption)
+                    
+                    if let timeTaken = ride.publish.estimateTime {
+
+                        Text(DateFormatterUtil.shared.datetimeFormat(
+                            dateTime: timeTaken,
+                            format: AppConstants.DateTimeFormat.hourMin))
+                            .font(.caption)
+                    }
+                    
                     Spacer()
                     
-                    Text("Arr Time")
-                        .font(.headline)
-                        .padding(.bottom, 50)
+                    if let arrTime = ride.reachTime {
+                        Text(DateFormatterUtil.shared.datetimeFormat(
+                            dateTime: arrTime,
+                            format: AppConstants.DateTimeFormat.hourMin))
+                            .font(.headline)
+                            .padding(.top, 50)
+                    }
                 }
                 
                 CustomShape()
                     .stroke(Color.black, lineWidth: 3)
                     .frame(maxWidth: 10)
-                    .padding(.bottom, 55)
+                    .padding(.bottom, 5)
                 
                 VStack(alignment: .leading, spacing: 10) {
                     CarLocationView(
-                        title: "Pickup Location",
-                        colour: cardVm.colorCodeDist(
-                            distance: cardVm.depDist),
-                        distance: cardVm.depDist)
+                        title: ride.publish.source)
                     
                     Spacer()
                     
                     CarLocationView(
-                        title: "Drop Location",
-                        colour: cardVm.colorCodeDist(
-                            distance: cardVm.arrDist),
-                        distance: cardVm.arrDist)
+                        title: ride.publish.destination)
+                    .padding(.top, 50)
                 }
                 
                 Spacer()
                 
                 VStack(spacing: 10) {
-                    Text("Price")
+                    Text("\(AppConstants.AppStrings.rs) \(Int(ride.publish.setPrice)/seats)")
                         .font(.headline)
-                    Text("Seats Left")
+                    Text("\(ride.publish.passengersCount) \(AppConstants.AppStrings.seatsLeft)")
                     Spacer()
                 }
             }
             
             Divider()
             
-            HStack {
-              
-                Image(systemName: "person.circle.fill")
-                    .resizable()
-                    .frame(width: 40, height: 40)
-                
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("User Name")
-                    
-                    HStack {
-                        Image(systemName: AppConstants.AppImages.star)
-                            .opacity(0.6)
-                        Text("Rating")
-                    }
-                    
-                }
-                
-                Spacer()
-                
-                if true {
-                    Image(systemName: AppConstants.AppImages.bolt)
-                        .font(.title2)
-                        .opacity(0.8)
-                }
-                
-            }
-            .padding(.top, 10)
+            DriverProfile(imageUrl: ride.imageURL, name: ride.name, averageRating: ride.averageRating)
+                .padding(.top, 10)
+
+//                if let instant = ride.publish.bookInstantly {
+//                    if instant{
+//                        Image(systemName: AppConstants.AppImages.bolt)
+//                            .font(.title2)
+//                            .opacity(0.8)
+//                    }
+//                }
         }
         .padding()
         .frame(maxWidth: UIScreen.main.bounds.width - 50)
@@ -101,6 +95,6 @@ struct CarRideCardView: View {
 
 struct CarRidesListView_Previews: PreviewProvider {
     static var previews: some View {
-        CarRideCardView()
+        CarRideCardView(ride: RideDetails.details, seats: 1)
     }
 }

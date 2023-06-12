@@ -9,11 +9,13 @@ import Foundation
 
 struct ChangePassword: Codable {
     
-    var currentPassword: String
+    var email: String?
+    var currentPassword: String?
     var password: String
     var confirmPassword: String
     
     enum CodingKeys: String, CodingKey {
+        case email
         case currentPassword = "current_password"
         case password
         case confirmPassword = "password_confirmation"

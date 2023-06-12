@@ -54,7 +54,7 @@ struct ProfileView: View {
                             Text("\(data.firstName) \(data.lastName),")
                                 .font(.headline)
                             
-                            Text("\(profileVm.calculateAge(dob: data.dob))")
+                            Text("\(DateFormatterUtil.shared.calculateAge(dob: data.dob))")
                                 .font(.headline)
                                 .foregroundColor(.secondary)
                         }
@@ -95,7 +95,7 @@ struct ProfileView: View {
                         .padding(.top)
                         
                         // About You
-                        if let bio = data.bio {
+                        if let bio = data.bio, !bio.isEmpty {
                             LazyVStack(alignment: .leading, spacing: 10) {
                                 
                                 Text(AppConstants.AppStrings.aboutYou)
@@ -108,8 +108,6 @@ struct ProfileView: View {
                                     .padding(.vertical, 10)
                                     .opacity(0.7)
                                     .bold()
-                                
-                                // Text("Travel Preferences")
                                 
                                 Divider()
                             }
@@ -223,7 +221,9 @@ struct ProfileView: View {
                             
                             Text(AppConstants.AppStrings.memberSince
                                  + " " +
-                                 profileVm.memberSince(date: data.createdAt)
+                                 DateFormatterUtil.shared.datetimeFormat(
+                                    dateTime: data.createdAt,
+                                    format: AppConstants.DateTimeFormat.monthYear)
                             )
                                 .font(.subheadline)
                                 .opacity(0.6)
@@ -238,12 +238,6 @@ struct ProfileView: View {
                 }
                 
                 LazyVStack(alignment: .leading, spacing: 15) {
-                    Button {
-
-                    } label: {
-                        ProfileRowView(title: AppConstants.AppStrings.deleteAccount)
-                    }
-                    Divider()
                     
                     NavigationLink {
                         ChangePasswordView()
@@ -254,10 +248,25 @@ struct ProfileView: View {
                     Divider()
                     
                     Button {
-                        
+                        profileVm.deleteAccount()
+                    } label: {
+                       Text(AppConstants.AppStrings.deleteAccount)
+                            .foregroundColor(.red)
+                    }
+                    .onChange(of: profileVm.success) { _ in
+                        NavigationUtil.popToRootView()
+                    }
+                    
+                    Divider()
+                    
+                    Button {
+                        profileVm.signOut()
                     } label: {
                         Text(AppConstants.ButtonLabels.logOut)
                             .bold()
+                    }
+                    .onChange(of: profileVm.isSuccess) { _ in
+                        NavigationUtil.popToRootView()
                     }
                 }
                 .padding(.vertical)
@@ -267,6 +276,24 @@ struct ProfileView: View {
         .navigationTitle(AppConstants.AppHeadings.profile)
         .navigationBarBackButtonHidden(true)
         .navigationBarTitleDisplayMode(.inline)
+        
+        // Show alert if there is error in updating profile
+        .alert("", isPresented: $profileVm.hasError) {
+            Button(AppConstants.ButtonLabels.ok, role: .cancel) {}
+        } message: {
+            if let error = profileVm.errorMessage {
+                Text(error.localizedDescription)
+                    .font(.headline)
+            }
+        }
+        .alert("", isPresented: $profileVm.anyError) {
+            Button(AppConstants.ButtonLabels.ok, role: .cancel) {}
+        } message: {
+            if let error = profileVm.errorMessage {
+                Text(error.localizedDescription)
+                    .font(.headline)
+            }
+        }
     }
 }
 

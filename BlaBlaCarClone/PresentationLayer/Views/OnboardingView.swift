@@ -19,9 +19,10 @@ struct OnboardingView: View {
                 
                 VStack {
                     Image(AppConstants.AppImages.carpool)
+                        .resizable()
                         .ignoresSafeArea()
                 }
-                .frame(maxHeight: 400)
+                .frame(maxHeight: 360)
                 
                 VStack {
                     Text(AppConstants.AppHeadings.welcomeMssg)
@@ -80,7 +81,6 @@ struct OnboardingView: View {
             }
             .background(.white)
         }
-        .environmentObject(vm)
     }
 }
 

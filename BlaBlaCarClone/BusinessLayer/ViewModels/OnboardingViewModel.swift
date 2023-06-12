@@ -10,5 +10,5 @@ import Foundation
 class OnboardingViewModel: ObservableObject {
     
     @Published var fromSignUpView: Bool = false
-    @Published var path: [Int] = []
+    
 }

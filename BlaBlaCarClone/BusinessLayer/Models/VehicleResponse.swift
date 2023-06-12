@@ -42,6 +42,8 @@ struct Vehicle: Codable {
     var userId: Int
     
     enum CodingKeys: String, CodingKey {
+        
+        case id
         case country
         case number = "vehicle_number"
         case brand = "vehicle_brand"
@@ -49,7 +51,6 @@ struct Vehicle: Codable {
         case type = "vehicle_type"
         case color = "vehicle_color"
         case model = "vehicle_model_year"
-        case id
         case userId = "user_id"
     }
 }

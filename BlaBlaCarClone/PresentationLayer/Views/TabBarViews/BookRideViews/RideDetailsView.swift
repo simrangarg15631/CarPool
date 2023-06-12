@@ -9,7 +9,10 @@ import SwiftUI
 
 struct RideDetailsView: View {
     
+    @StateObject var rideVm = RideDetailsViewModel()
     @Environment (\.dismiss) var dismiss
+    var ride: RideDetails
+    @ObservedObject var homeVm: BookRideViewModel
     
     var body: some View {
         
@@ -32,11 +35,27 @@ struct RideDetailsView: View {
                         
                         DetailView(
                             image: AppConstants.AppImages.calendar,
-                            text: "Day, Date")
+                            text: ride.publish.date)
                         
-                        DetailView(image: AppConstants.AppImages.clock, text: "Ride duration (Estimated)")
+                        if let estimateTime = ride.publish.estimateTime {
+                            DetailView(image: AppConstants.AppImages.clock,
+                                       text: DateFormatterUtil.shared.datetimeFormat(
+                                        dateTime: estimateTime,
+                                        format: AppConstants.DateTimeFormat.hourMin)
+                            )}
                         
-                        DetailView(image: AppConstants.AppImages.distance, text: "Ride distance")
+                        if let selectRoute = ride.publish.selectRoute?.routes {
+                            
+                            if !selectRoute.isEmpty {
+                                
+                                if !selectRoute[0].legs.isEmpty {
+                                    
+                                    DetailView(
+                                        image: AppConstants.AppImages.distance,
+                                        text: selectRoute[0].legs[0].distance.text)
+                                }
+                            }
+                        }
                     }
                     .padding()
                     
@@ -48,70 +67,54 @@ struct RideDetailsView: View {
                         CustomShape()
                             .stroke(Color.black, lineWidth: 1)
                             .frame(maxWidth: 10)
-                            .padding(.bottom, 75)
+                            .padding(.bottom, 25)
                         
                         VStack(alignment: .leading) {
                             
-                            NavigationLink {
-                                // TODO: - Add Map View
-                            } label: {
-                                
-                                RideDetailComponent(
-                                    title: "PickUp Location",
-                                    subTitle: "Detailed location",
-                                    time: "Time",
-                                    distance: "distance from your pickup location",
-                                    onConfirmRide: false)
-                            }
+                            RideDetailComponent(
+                                title: ride.publish.source,
+                                time: DateFormatterUtil.shared.datetimeFormat(dateTime: ride.publish.time,
+                                                                          format: AppConstants.DateTimeFormat.hourMin))
                             .padding(.bottom)
                             
-                            NavigationLink {
-                                // TODO: - Add Map View
-                            } label: {
-                                
-                                RideDetailComponent(
-                                    title: "Drop Location",
-                                    subTitle: "Detailed location",
-                                    time: "Time",
-                                    distance: "distance from your drop location",
-                                    onConfirmRide: false)
-                                
-                            }
+                            RideDetailComponent(
+                                title: ride.publish.destination,
+                                time: DateFormatterUtil.shared.datetimeFormat(dateTime: ride.reachTime ?? "",
+                                                                          format: AppConstants.DateTimeFormat.hourMin))
                             .padding(.top)
                         }
                     }
                     .padding()
                     
-                    Divider()
-                    
-                    // Seat and Price
-                    VStack(alignment: .leading, spacing: 8) {
-                        HStack {
-                            Text(AppConstants.AppStrings.seatsLeft)
-                                .font(.headline)
-                                .opacity(0.7)
-                            
-                            Spacer()
-                            
-                            Text("2")
-                        }
+                    if !rideVm.onConfirmRide {
                         
-                        HStack {
-                            Text(AppConstants.AppStrings.pricePerSeat)
-                                .font(.headline)
-                                .opacity(0.7)
-                            
-                            Spacer()
-                            
-                            Text("Rs 240.00")
-                            
-                        }
+                        Divider()
                         
-//                        Text(AppConstants.AppStrings.payVia)
-//                            .font(.caption)
-//                            .foregroundColor(.gray)
+                        // Seat and Price
+                        VStack(alignment: .leading, spacing: 8) {
+                            HStack {
+                                Text(AppConstants.AppStrings.seatsLeft)
+                                    .font(.headline)
+                                    .opacity(0.7)
+                                
+                                Spacer()
+                                
+                                Text("\(ride.publish.passengersCount)")
+                            }
+                            
+                            HStack {
+                                Text(AppConstants.AppStrings.pricePerSeat)
+                                    .font(.headline)
+                                    .opacity(0.7)
+                                
+                                Spacer()
+                                
+                                Text("\(AppConstants.AppStrings.rs) \(Int(ride.publish.setPrice)/homeVm.noOfSeats)")
+                                
+                            }
+                        }
+                        .padding()
                     }
-                    .padding()
                     
                     Rectangle()
                         .foregroundColor(.gray.opacity(0.1))
@@ -120,70 +123,67 @@ struct RideDetailsView: View {
                     // Driver Profile
                     VStack(alignment: .leading, spacing: 24) {
                         
-                        NavigationLink {
-                            // Go to DriverProfileView
-                        }label: {
+                        DriverProfile(imageUrl: ride.imageURL, name: ride.name, averageRating: ride.averageRating)
+                        
+//                                                HStack {
+//                                                    Image(systemName: AppConstants.AppImages.car)
+//                                                        .font(.headline)
+//                                                        .opacity(0.7)
+//
+//                                                    Text("Car Name (Color)")
+//                                                        .font(.headline)
+//                                                        .opacity(0.7)
+//
+//                                                    Spacer()
+//                                                }
+                        
+                    }
+                    .padding()
+                    
+                    if let aboutRide = ride.aboutRide, !aboutRide.isEmpty {
+                        
+                        Divider()
+                        // Ride Preferences
+                        VStack(alignment: .leading, spacing: 10) {
                             
-                            HStack(spacing: 12) {
-                                
-                                Image(systemName: "person.circle.fill")
-                                    .resizable()
-                                    .frame(width: 50, height: 50)
-                                    .foregroundColor(.gray)
-                                
-                                VStack(alignment: .leading, spacing: 8) {
-                                    
-                                    Text("Arjun singh")
-                                        .font(.headline)
-                                        .foregroundColor(.black)
-                                    
-                                    HStack(spacing: 4) {
-                                        Text("4.5")
-                                        Image(systemName: AppConstants.AppImages.star)
-                                        Text("27 Ratings")
-                                    }
-                                    .foregroundColor(.gray)
-                                }
+                            Text(AppConstants.AppHeadings.aboutRide)
+                                .font(.headline)
+                            
+                            Text(aboutRide)
+                                .opacity(0.7)
+                        }
+                        .padding()
+                    }
+                    
+                    if rideVm.onConfirmRide {
+                        
+                        Divider()
+                        
+                        // Seat and Price
+                        VStack(alignment: .leading, spacing: 8) {
+                            HStack {
+                                Text(AppConstants.AppStrings.bookedSeats)
+                                    .font(.subheadline)
+                                    .bold()
+                                    .opacity(0.7)
                                 
                                 Spacer()
                                 
-                                Image(systemName: AppConstants.AppImages.chevronRight)
-                                    .foregroundColor(.black)
+                                Text("x\(homeVm.noOfSeats)")
                             }
-                        }
-                        
-                        HStack {
-                            Image(systemName: AppConstants.AppImages.car)
-                                .font(.headline)
-                                .opacity(0.7)
                             
-                            Text("Car Name (Color)")
-                                .font(.headline)
-                                .opacity(0.7)
-                            
-                            Spacer()
-                            
-                            Button {
-                                // Add action
-                            }label: {
-                                Text("\(AppConstants.ButtonLabels.contact) Arjun")
+                            HStack {
+                                Text(AppConstants.AppStrings.totalAmount)
                                     .font(.headline)
+                                
+                                Spacer()
+                                
+                                Text("\(AppConstants.AppStrings.rs) \(Int(ride.publish.setPrice))")
                             }
+                            
                         }
-                        
+                        .padding()
                     }
-                    .padding()
-                    
-                    Divider()
-                    
-                    // Ride Preferences
-                    VStack(alignment: .leading) {
-                        
-                        Text(AppConstants.AppHeadings.ridePreferences)
-                            .font(.headline)
-                        Text("all amenities allowed")
-                    }
-                    .padding()
                     
                     Rectangle()
                         .foregroundColor(.gray.opacity(0.1))
@@ -192,31 +192,57 @@ struct RideDetailsView: View {
                 
             }
             
-            // Continue Button
-            NavigationLink {
-                // Navigate
-                ConfirmRideView()
-            } label: {
-                ButtonLabelView(buttonLabel: AppConstants.ButtonLabels.contnue)
-                    .cornerRadius(20)
+            if rideVm.isLoading {
+                ProgressView()
+                    .padding(.bottom, 20)
             }
-            .padding()
+            
+            if !rideVm.onConfirmRide {
+                // Continue Button
+                Button {
+                    rideVm.onConfirmRide.toggle()
+                } label: {
+                    ButtonLabelView(buttonLabel: AppConstants.ButtonLabels.contnue)
+                        .cornerRadius(20)
+                }
+                .padding()
+            } else {
+                // Confirm Button
+                Button {
+                    // Call Api to book ride
+                    rideVm.bookRide(data: BookRideData(passenger: Passenger(
+                        publishId: ride.publish.id,
+                        seats: homeVm.noOfSeats)))
+                    
+                } label: {
+                    ButtonLabelView(buttonLabel: AppConstants.ButtonLabels.confirmRide)
+                        .cornerRadius(20)
+                }
+                .padding()
+            }
         }
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
+        .navigationDestination(isPresented: $rideVm.isSuccess, destination: {
+            // Navigate to View Showing ride booked
+            RideBookedView(homeVm: homeVm)
+        })
+        .alert("", isPresented: $rideVm.hasError) {
+            Button(AppConstants.ButtonLabels.ok, role: .cancel) {}
+        } message: {
+            if let error = rideVm.errorMessage {
+                Text(error.localizedDescription)
+                    .font(.headline)
+            }
+        }
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 TitleView(title: AppConstants.AppHeadings.rideDetails)
             }
-            
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button {
-                    
-                } label: {
-                    Text(AppConstants.ButtonLabels.report)
-                        .font(.headline)
-                }
-                
+        }
+        .onAppear {
+            if homeVm.dismiss {
+                self.dismiss()
             }
         }
     }
@@ -225,7 +251,7 @@ struct RideDetailsView: View {
 struct RideDetailsView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
-            RideDetailsView()
+            RideDetailsView(ride: RideDetails.details, homeVm: BookRideViewModel())
         }
     }
 }

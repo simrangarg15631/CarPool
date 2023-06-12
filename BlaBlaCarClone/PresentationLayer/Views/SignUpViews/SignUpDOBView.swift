@@ -21,6 +21,21 @@ struct SignUpDOBView: View {
             
             Headingview(title: AppConstants.AppHeadings.whatsYourDob)
             
+            HStack {
+                Spacer()
+                
+                Text(DateFormatterUtil.shared.formatDate(
+                    date: vm.dateOfBirth,
+                    format: AppConstants.DateTimeFormat.dateMonYear))
+                .font(.headline)
+                .opacity(0.9)
+                .padding(6)
+                .background(Color.gray.opacity(0.1))
+                
+                Spacer()
+            }
+            .padding(.top)
+            
             if let date = vm.date {
                 DatePicker(AppConstants.AppHeadings.whatsYourDob,
                            selection: $vm.dateOfBirth,

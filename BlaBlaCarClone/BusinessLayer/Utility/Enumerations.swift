@@ -92,3 +92,10 @@ enum ViewType {
     case add
     case edit
 }
+
+enum Options: String, CaseIterable {
+    
+    case itinerary = "Itinerary Details"
+    case price = "Price"
+    case seats = "Seats and options"
+}

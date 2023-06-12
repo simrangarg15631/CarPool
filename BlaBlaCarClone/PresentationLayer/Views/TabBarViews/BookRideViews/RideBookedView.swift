@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct RideBookedView: View {
+    
+    @ObservedObject var homeVm: BookRideViewModel
+    @Environment (\.dismiss) var dismiss
+    
     var body: some View {
         
         VStack {
@@ -32,6 +36,8 @@ struct RideBookedView: View {
             
             Button {
              // Pop to Home Screen
+                homeVm.dismiss = true
+                self.dismiss()
             } label: {
                 
                 Text(AppConstants.ButtonLabels.ok)
@@ -54,6 +60,6 @@ struct RideBookedView: View {
 
 struct RideBookedView_Previews: PreviewProvider {
     static var previews: some View {
-        RideBookedView()
+        RideBookedView(homeVm: BookRideViewModel())
     }
 }

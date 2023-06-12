@@ -12,7 +12,6 @@ struct InputFieldView: View {
     var placeholder: String
     var textInputAutocapitalization: TextInputAutocapitalization = .never
     var keyBoardType: UIKeyboardType = .default
-    var opacity = 0.1
     var isSecured = false
     @Binding var textFieldValue: String
     
@@ -31,7 +30,7 @@ struct InputFieldView: View {
             } else {
                 TextField(placeholder, text: $textFieldValue)
                     .padding(12)
-                    .background(Color.gray.opacity(opacity))
+                    .background(Color.gray.opacity(0.1))
                     .autocorrectionDisabled(true)
                     .textInputAutocapitalization(textInputAutocapitalization)
                     .keyboardType(keyBoardType)

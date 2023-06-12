@@ -18,14 +18,14 @@ struct SearchListRowView: View {
             
             Text(searchResult.name ?? "")
             
-            Text((searchResult.subLocality ?? "") + (searchResult.locality ?? "")  + (searchResult.postalCode ?? ""))
+            Text("\(searchResult.subLocality ?? "") \(searchResult.locality ?? "") \(searchResult.postalCode ?? "")")
                 .opacity(0.6)
         }
     }
 }
 
-//struct SearchListRowView_Previews: PreviewProvider {
+// struct SearchListRowView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        SearchListRowView(searchResult: CLPlacemark())
 //    }
-//}
+// }

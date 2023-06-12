@@ -33,7 +33,9 @@ struct SearchLocationview: View {
                     
                     List(searchRes, id: \.self) { res in
                         Button {
-                            address = (res.name ?? "") + (res.subLocality ?? "") + (res.locality ?? "")  + (res.postalCode ?? "")
+                            address = """
+\(res.name ?? "") \(res.subLocality ?? "") \(res.locality ?? "") \(res.postalCode ?? "")
+"""
                             coordinates = res.location?.coordinate ?? CLLocationCoordinate2D()
                             dismiss()
                         } label: {

@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct PickerView: View {
-    
-    @StateObject var pickerVm = PickerViewModel()
-    
+
     @Binding var showPicker: Bool
     @Binding var shownDate: Date
     @Binding var myDate: String
@@ -25,7 +23,7 @@ struct PickerView: View {
                     Spacer()
                     
                     Button {
-                        myDate = pickerVm.formatDob(date: shownDate)
+                        myDate = DateFormatterUtil.shared.formatDate(date: shownDate)
                         showPicker.toggle()
                     } label: {
                         Text(AppConstants.ButtonLabels.done)

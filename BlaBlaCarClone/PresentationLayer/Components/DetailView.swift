@@ -11,14 +11,15 @@ struct DetailView: View {
     
     var image: String
     var text: String
+    var color: Color = .black
     
     var body: some View {
         
         HStack {
             Image(systemName: image)
+                .foregroundColor(color)
             Text(text)
         }
-        .opacity(0.7)
     }
 }
 

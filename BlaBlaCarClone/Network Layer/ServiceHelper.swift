@@ -38,6 +38,7 @@ class ServiceHelper {
                 }
                 
                 if !((200..<300) ~= urlResponse.statusCode) {
+                    print()
                     throw APIError.badResponse(urlResponse.statusCode)
                 }
                 return (data, urlResponse)

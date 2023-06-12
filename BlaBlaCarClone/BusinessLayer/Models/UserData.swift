@@ -23,6 +23,7 @@ struct UserDetails: Codable {
     var phoneNumber: Int?
     var passcode: String?
     var bio: String?
+    var otp: Int?
     
     enum CodingKeys: String, CodingKey {
         case email
@@ -32,5 +33,8 @@ struct UserDetails: Codable {
         case dob
         case title
         case phoneNumber = "phone_number"
+        case passcode
+        case bio
+        case otp
     }
 }

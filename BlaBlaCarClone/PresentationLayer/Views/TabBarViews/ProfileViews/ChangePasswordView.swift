@@ -30,6 +30,7 @@ struct ChangePasswordView: View {
                     textFieldValue: $changeVm.newPw)
                 .onChange(of: changeVm.newPw) { _ in
                     changeVm.validPassword()
+                    changeVm.confirmPass()
                 }
                 
                 if changeVm.passPrompt {
@@ -82,6 +83,9 @@ struct ChangePasswordView: View {
             }
 
         }
+        .onChange(of: changeVm.isSuccess, perform: { _ in
+            NavigationUtil.popToRootView()
+        })
         .padding()
         .navigationTitle(AppConstants.AppStrings.changePassword)
         .navigationBarBackButtonHidden(true)

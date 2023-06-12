@@ -10,8 +10,8 @@ import SwiftUI
 struct CarLocationView: View {
     
     var title: String
-    var colour: Color
-    var distance: Int
+//    var colour: Color
+//    var distance: Int
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -20,20 +20,20 @@ struct CarLocationView: View {
                 .multilineTextAlignment(.leading)
                 .font(.headline)
             
-            HStack {
-                Image(systemName: AppConstants.AppImages.walkingFigure)
-                    .font(.headline)
-                    .foregroundColor(colour)
-                
-                Text("\(distance) km")
-                    .font(.caption)
-            }
+//            HStack {
+//                Image(systemName: AppConstants.AppImages.walkingFigure)
+//                    .font(.headline)
+//                    .foregroundColor(colour)
+//
+//                Text("\(distance) km")
+//                    .font(.caption)
+//            }
         }
     }
 }
 
 struct CarLocationView_Previews: PreviewProvider {
     static var previews: some View {
-        CarLocationView(title: "PickUp Location", colour: .gray, distance: 0)
+        CarLocationView(title: "PickUp Location")
     }
 }

@@ -28,9 +28,11 @@ struct SignUpPhoneView: View {
             
                 .padding(.top, 25)
                 .onChange(of: vm.phoneNumber, perform: {_ in
+                    // as the value of phoneNumber changes, checks if the PhoneNumber is valid
                     vm.validPhone()
                 })
             
+            // show when phoneNumber is not valid
             if vm.phonePrompt {
                 Text(vm.phoneMessage)
                     .foregroundColor(.red)
@@ -40,6 +42,7 @@ struct SignUpPhoneView: View {
             
             Spacer()
             
+            // Activity indicator to show api is loading
             if vm.isLoading {
                 ProgressView()
                     .padding(.bottom, 20)
@@ -47,15 +50,22 @@ struct SignUpPhoneView: View {
             
             // SignUp Button
             Button {
-                // Sign Up Api
+                // calls api to signup
+                // if success, it toggles the signUpActive value and calls sendOTP function
+                // if error, it toggles the hasError value and shows alert
                 vm.signUp()
             } label: {
                 ButtonLabelView(buttonLabel: AppConstants.ButtonLabels.signUp)
                     .cornerRadius(18)
             }
+            // disable button if textfield is not filled correctly
             .opacity(vm.disableSignUpbtn() ? 0.5 : 1)
             .disabled(vm.disableSignUpbtn())
+            
             .onChange(of: vm.signUpActive) { _ in
+                // if successful signup, calls api to send otp to verify phoneNumber
+                // if success, it toggles the isPresented value and navigates to next page
+                // if error, it toggles the hasError value and shows alert
                 phoneVm.sendOTP(phone: vm.phoneNumber)
             }
             
@@ -65,6 +75,7 @@ struct SignUpPhoneView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
         .navigationDestination(isPresented: $phoneVm.isPresented, destination: {
+            // if otp is sent successfully, navigate to EnterOTPView
             EnterOTPView(phone: vm.phoneNumber)
         })
         .toolbar {

@@ -30,11 +30,6 @@ struct SignUpGenderView: View {
             
             Spacer()
             
-            if vm.isLoading {
-                ProgressView()
-                    .padding(.bottom, 20)
-            }
-            
             // Next Button
             NavigationLink {
                 // Navigate to SignUpPhoneView to enter phone number
@@ -61,18 +56,6 @@ struct SignUpGenderView: View {
             // progress bar value
             vm.currentValue = 3
         }
-//        .navigationDestination(isPresented: $vm.signUpActive, destination: {
-//            SignUpPhoneView(vm: vm)
-//        })
-        // Show alert if there is error
-//        .alert("", isPresented: $vm.hasError) {
-//            Button(AppConstants.ButtonLabels.ok, role: .cancel) {}
-//        } message: {
-//            if let error = vm.errorMessage {
-//                Text(error.localizedDescription)
-//                    .font(.headline)
-//            }
-//        }
     }
 }
 
