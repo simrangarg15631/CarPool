@@ -69,7 +69,7 @@ struct BookRideDetailsView: View {
                             title: rideData.ride.source,
                             time: DateFormatterUtil.shared.datetimeFormat(
                                 dateTime: rideData.ride.time,
-                                format: AppConstants.DateTimeFormat.hourMin) )
+                                format: DateTimeFormat.hourMin) )
                         .padding(.bottom)
                         
                         // Drop location

@@ -12,7 +12,7 @@ class DateFormatterUtil {
     static let shared = DateFormatterUtil()
     private init() {}
     
-    func formatDate(date: Date, format: String = AppConstants.DateTimeFormat.yearMonthDate) -> String {
+    func formatDate(date: Date, format: String = DateTimeFormat.yearMonthDate) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
         return dateFormatter.string(from: date)
@@ -21,7 +21,7 @@ class DateFormatterUtil {
     func datetimeFormat(dateTime: String, format: String) -> String {
         
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = AppConstants.DateTimeFormat.dateTime
+        dateFormatter.dateFormat = DateTimeFormat.dateTime
         
         let myTime = dateFormatter.date(from: dateTime)
         
@@ -48,7 +48,7 @@ class DateFormatterUtil {
     /// - Returns: Int, age in years
     func calculateAge(dob: String) -> Int {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = AppConstants.DateTimeFormat.yearMonthDate
+        dateFormatter.dateFormat = DateTimeFormat.yearMonthDate
         
         guard let date = dateFormatter.date(from: dob) else {
             return 0

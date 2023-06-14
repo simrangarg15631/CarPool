@@ -23,14 +23,14 @@ struct CarRideCardView: View {
                     
                     Text(DateFormatterUtil.shared.datetimeFormat(
                         dateTime: ride.publish.time,
-                        format: AppConstants.DateTimeFormat.hourMin))
+                        format: DateTimeFormat.hourMin))
                         .font(.headline)
                     
                     if let timeTaken = ride.publish.estimateTime {
 
                         Text(DateFormatterUtil.shared.datetimeFormat(
                             dateTime: timeTaken,
-                            format: AppConstants.DateTimeFormat.hourMin))
+                            format: DateTimeFormat.hourMin))
                             .font(.caption)
                     }
                     
@@ -39,7 +39,7 @@ struct CarRideCardView: View {
                     if let arrTime = ride.reachTime {
                         Text(DateFormatterUtil.shared.datetimeFormat(
                             dateTime: arrTime,
-                            format: AppConstants.DateTimeFormat.hourMin))
+                            format: DateTimeFormat.hourMin))
                             .font(.headline)
                             .padding(.top, 50)
                     }

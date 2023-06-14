@@ -10,9 +10,8 @@ import SwiftUI
 struct SeatsOptionsView: View {
     
     @Environment (\.dismiss) var dismiss
-    @State private var seatsCount = 1
-    @State private var aboutRide = String()
-    var ride: PublishDetails
+    @ObservedObject var editVm: EditPublicationViewModel
+    var publishId: Int
     
     var body: some View {
         
@@ -38,16 +37,16 @@ struct SeatsOptionsView: View {
                 Spacer()
                 
                 ImageButton(image: AppConstants.AppImages.minus) {
-                    seatsCount -= 1
+                    editVm.seats -= 1
                 }
-                .disabled(seatsCount == 1)
+                .disabled(editVm.seats == 1)
 
-                Text("\(seatsCount)")
+                Text("\(editVm.seats)")
                 
                 ImageButton(image: AppConstants.AppImages.plus) {
-                    seatsCount += 1
+                    editVm.seats += 1
                 }
-                .disabled(seatsCount == 8)
+                .disabled(editVm.seats == 8)
                 
             }
             .font(.title2)
@@ -69,7 +68,7 @@ struct SeatsOptionsView: View {
                         .font(.caption)
                         .foregroundColor(.gray)
                     
-                    TextEditor(text: $aboutRide)
+                    TextEditor(text: $editVm.aboutRide)
                     
                 }
                 .frame(maxWidth: .infinity, maxHeight: 140)
@@ -82,26 +81,54 @@ struct SeatsOptionsView: View {
             
             Spacer()
             
+            if editVm.isLoading {
+                ProgressView()
+                    .padding(.bottom, 20)
+            }
+            
             Button {
-                
+                editVm.editPublication(id: publishId, data: UpdateData(
+                    source: editVm.source,
+                    destination: editVm.destination,
+                    sourceLongitude: editVm.sourceCoord.longitude,
+                    sourceLatitude: editVm.sourceCoord.latitude,
+                    destinationLongitude: editVm.destCoord.longitude,
+                    destinationLatitude: editVm.destCoord.latitude,
+                    passengersCount: editVm.seats,
+                    date: DateFormatterUtil.shared.formatDate(date: editVm.date),
+                    time: DateFormatterUtil.shared.formatDate(date: editVm.time, format: DateTimeFormat.hourMin),
+                    setPrice: Double(editVm.price),
+                    aboutRide: editVm.aboutRide))
             } label: {
                 ButtonLabelView(buttonLabel: AppConstants.ButtonLabels.save)
                     .cornerRadius(12)
             }
             .padding()
-
-            
+            .onChange(of: editVm.success, perform: { newValue in
+                if newValue {
+                    self.dismiss()
+                }
+            })
         }
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
+        .alert("", isPresented: $editVm.anyError) {
+            Button(AppConstants.ButtonLabels.ok, role: .cancel) {}
+
+        } message: {
+            if let error = editVm.errorMessage {
+                Text(error.localizedDescription)
+            }
+        }
         .onAppear {
-            seatsCount = ride.passengersCount
+            editVm.success = false
         }
     }
 }
 
 struct SeatsOptionsView_Previews: PreviewProvider {
     static var previews: some View {
-        SeatsOptionsView(ride: PublishRideResponse.publishRideResponse.publish)
+        SeatsOptionsView(editVm: EditPublicationViewModel(),
+                         publishId: 0)
     }
 }

@@ -58,7 +58,7 @@ struct MyRidesCardView: View {
             DetailView(image: AppConstants.AppImages.clock,
                        text: DateFormatterUtil.shared.datetimeFormat(
                         dateTime: rideData.time,
-                        format: AppConstants.DateTimeFormat.hourMin))
+                        format: DateTimeFormat.hourMin))
             
             if !published {
                 if let seat = seats {
@@ -77,7 +77,7 @@ struct MyRidesCardView: View {
                 Text("""
 Published on: \
 \(DateFormatterUtil.shared.datetimeFormat(dateTime: rideData.createdAt,
-format: AppConstants.DateTimeFormat.dateMonYearTime))
+format: DateTimeFormat.dateMonYearTime))
 """)
                     .padding(.top)
                     .opacity(0.7)

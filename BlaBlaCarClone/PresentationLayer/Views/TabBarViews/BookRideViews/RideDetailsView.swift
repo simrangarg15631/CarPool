@@ -41,7 +41,7 @@ struct RideDetailsView: View {
                             DetailView(image: AppConstants.AppImages.clock,
                                        text: DateFormatterUtil.shared.datetimeFormat(
                                         dateTime: estimateTime,
-                                        format: AppConstants.DateTimeFormat.hourMin)
+                                        format: DateTimeFormat.hourMin)
                             )}
                         
                         if let selectRoute = ride.publish.selectRoute?.routes {
@@ -73,14 +73,15 @@ struct RideDetailsView: View {
                             
                             RideDetailComponent(
                                 title: ride.publish.source,
-                                time: DateFormatterUtil.shared.datetimeFormat(dateTime: ride.publish.time,
-                                                                          format: AppConstants.DateTimeFormat.hourMin))
+                                time: DateFormatterUtil.shared.datetimeFormat(
+                                    dateTime: ride.publish.time,
+                                format: DateTimeFormat.hourMin))
                             .padding(.bottom)
                             
                             RideDetailComponent(
                                 title: ride.publish.destination,
                                 time: DateFormatterUtil.shared.datetimeFormat(dateTime: ride.reachTime ?? "",
-                                                                          format: AppConstants.DateTimeFormat.hourMin))
+                                                                          format: DateTimeFormat.hourMin))
                             .padding(.top)
                         }
                     }

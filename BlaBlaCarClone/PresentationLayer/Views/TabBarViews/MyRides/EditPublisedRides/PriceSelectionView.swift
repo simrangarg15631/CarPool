@@ -10,38 +10,38 @@ import SwiftUI
 struct PriceSelectionView: View {
     
     @Environment (\.dismiss) var dismiss
-    var ride: PublishDetails
-    @State private var price: Int = 120
+    @ObservedObject var editVm: EditPublicationViewModel
+    var publishId: Int
     
     var body: some View {
         
-        VStack(alignment: .leading) {
+        VStack {
             
             HStack {
                 ImageButton(image: AppConstants.AppImages.minus) {
-                    price -= 10
+                    editVm.price -= 10
                 }
                 .font(.largeTitle)
-                .disabled(price == 70)
+                .disabled(editVm.price == 70)
                 
                 Spacer()
                 
-                Text("Rs. \(price)")
+                Text("Rs. \(editVm.price)")
                     .font(.system(size: 42))
                     .bold()
-                    .foregroundColor(price > 130 ? .red : .green)
+                    .foregroundColor(editVm.price > 130 ? .red : .green)
                 
                 Spacer()
                 
                 ImageButton(image: AppConstants.AppImages.plus) {
-                    price += 10
+                    editVm.price += 10
                 }
                 .font(.largeTitle)
-                .disabled(price == 160)
+                .disabled(editVm.price == 160)
             }
             .padding(.top, 50)
             
-            if price > 130 {
+            if editVm.price > 130 {
                 
                 HStack {
                     
@@ -55,12 +55,33 @@ struct PriceSelectionView: View {
             
             Spacer()
             
+            if editVm.isLoading {
+                ProgressView()
+                    .padding(.bottom, 20)
+            }
+            
             Button {
-                
+                editVm.editPublication(id: publishId, data: UpdateData(
+                    source: editVm.source,
+                    destination: editVm.destination,
+                    sourceLongitude: editVm.sourceCoord.longitude,
+                    sourceLatitude: editVm.sourceCoord.latitude,
+                    destinationLongitude: editVm.destCoord.longitude,
+                    destinationLatitude: editVm.destCoord.latitude,
+                    passengersCount: editVm.seats,
+                    date: DateFormatterUtil.shared.formatDate(date: editVm.date),
+                    time: DateFormatterUtil.shared.formatDate(date: editVm.time, format: DateTimeFormat.hourMin),
+                    setPrice: Double(editVm.price),
+                    aboutRide: editVm.aboutRide))
             } label: {
                 ButtonLabelView(buttonLabel: AppConstants.ButtonLabels.save)
                     .cornerRadius(12)
             }
+            .onChange(of: editVm.success, perform: { newValue in
+                if newValue {
+                    self.dismiss()
+                }
+            })
 
         }
         .padding()
@@ -75,8 +96,16 @@ struct PriceSelectionView: View {
                 .font(.subheadline)
             }
         }
+        .alert("", isPresented: $editVm.anyError) {
+            Button(AppConstants.ButtonLabels.ok, role: .cancel) {}
+
+        } message: {
+            if let error = editVm.errorMessage {
+                Text(error.localizedDescription)
+            }
+        }
         .onAppear {
-            price = Int(ride.setPrice)
+            editVm.success = false
         }
     }
 }
@@ -84,7 +113,8 @@ struct PriceSelectionView: View {
 struct PriceSelectionView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
-            PriceSelectionView(ride: PublishRideResponse.publishRideResponse.publish)
+            PriceSelectionView(editVm: EditPublicationViewModel(),
+                               publishId: 0)
         }
     }
 }

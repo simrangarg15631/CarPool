@@ -7,58 +7,58 @@
 
 import Foundation
 
+struct DateTimeFormat {
+    static let hourMin = "hh:mm a"
+    static let yearMonthDate = "yyyy-MM-dd"
+    static let dateTime = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+    static let monthYear = "MMM yyyy"
+    static let dayDateMonth = "EEE d MMM"
+    static let dateMonYearTime = "dd MMM yyyy, hh:mm a"
+    static let dateMonYear = "dd MMM yyyy"
+}
+
+struct DirectionsApi {
+    
+    static let baseUrl = "https://maps.googleapis.com/maps/api/directions/json"
+    static let ApiKey = "AIzaSyDUzn63K64-sXadyIwRJExCfMaicagwGq4"
+}
+
+struct ApiUrls {
+    
+    static let baseUrl = "https://a7c6-112-196-113-2.ngrok-free.app"
+    static let users = "/users"
+    static let logInEndPoint = "/users/sign_in"
+    static let checkEmailEndPoint = "/email_check"
+    static let sendOTP = "/phone"
+    static let verifyPhone = "/verify"
+    static let search = "/search"
+    static let addImage = "/user_images"
+    static let vehicles = "/vehicles"
+    static let updatePassword = "/update_password"
+    static let signOut = "/users/sign_out"
+    static let publish = "/publishes"
+    static let bookRide = "/book_publish"
+    static let forgotPass = "/send_otp"
+    static let verifyOtp = "/verify_otp"
+    static let passwordReset = "/password_reset"
+    static let bookedRides = "/booked_publishes"
+    static let cancelBooking = "/cancel_booking"
+    static let cancelPublish = "/cancel_publish"
+}
+
+struct ApiKeys {
+    static let email = "email"
+    static let image = "image"
+    static let sourceLon = "source_longitude"
+    static let sourceLat = "source_latitude"
+    static let destLon = "destination_longitude"
+    static let destLat = "destination_latitude"
+    static let passCount = "passengers_count"
+    static let date = "date"
+    static let orderBy = "order_by"
+}
+
 struct AppConstants {
-    
-    struct DirectionsApi {
-        
-        static let baseUrl = "https://maps.googleapis.com/maps/api/directions/json"
-        static let ApiKey = "AIzaSyDUzn63K64-sXadyIwRJExCfMaicagwGq4"
-    }
-    
-    struct ApiUrls {
-        
-        static let baseUrl = "https://762b-112-196-113-2.ngrok-free.app"
-        static let users = "/users"
-        static let logInEndPoint = "/users/sign_in"
-        static let checkEmailEndPoint = "/email_check"
-        static let sendOTP = "/phone"
-        static let verifyPhone = "/verify"
-        static let search = "/search"
-        static let addImage = "/user_images"
-        static let vehicles = "/vehicles"
-        static let updatePassword = "/update_password"
-        static let signOut = "/users/sign_out"
-        static let publish = "/publishes"
-        static let bookRide = "/book_publish"
-        static let forgotPass = "/send_otp"
-        static let verifyOtp = "/verify_otp"
-        static let passwordReset = "/password_reset"
-        static let bookedRides = "/booked_publishes"
-        static let cancelBooking = "/cancel_booking"
-        static let cancelPublish = "/cancel_publish"
-    }
-    
-    struct ApiKeys {
-        static let email = "email"
-        static let image = "image"
-        static let sourceLon = "source_longitude"
-        static let sourceLat = "source_latitude"
-        static let destLon = "destination_longitude"
-        static let destLat = "destination_latitude"
-        static let passCount = "passengers_count"
-        static let date = "date"
-        static let orderBy = "order_by"
-    }
-    
-    struct DateTimeFormat {
-        static let hourMin = "hh:mm a"
-        static let yearMonthDate = "yyyy-MM-dd"
-        static let dateTime = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-        static let monthYear = "MMM yyyy"
-        static let dayDateMonth = "EEE d MMM"
-        static let dateMonYearTime = "dd MMM yyyy, hh:mm a"
-        static let dateMonYear = "dd MMM yyyy"
-    }
     
     struct AppHeadings {
         static let welcomeMssg = "Welcome to Carpool"
@@ -206,7 +206,6 @@ Find the perfect ride from thousands of destinations, or publish to share your t
         static let rideDetails = "Ride Details"
     }
     
-    // MARK: - Button Labels
     struct ButtonLabels {
         
         static let contnue = "Continue"
@@ -253,7 +252,6 @@ Find the perfect ride from thousands of destinations, or publish to share your t
         static let publishReturn = "Publish your return ride"
     }
     
-    // MARK: - App Images
     struct AppImages {
         
         static let carpool = "Carpool"

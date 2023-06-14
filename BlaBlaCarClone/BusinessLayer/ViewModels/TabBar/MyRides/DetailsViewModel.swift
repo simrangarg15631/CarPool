@@ -17,6 +17,7 @@ class DetailsViewModel: ObservableObject {
 
     @Published var rideData: PublishDetails = PublishRideResponse.publishRideResponse.publish
     @Published var passengersArray: [PassengerData] = []
+    @Published var fromDetails: Bool = true
     var publisher: AnyCancellable?
     let network = NetworkManager.shared
     

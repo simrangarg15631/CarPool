@@ -64,7 +64,7 @@ struct DetailsView: View {
                         title: detailsVm.rideData.source,
                         time: DateFormatterUtil.shared.datetimeFormat(
                             dateTime: detailsVm.rideData.time,
-                            format: AppConstants.DateTimeFormat.hourMin))
+                            format: DateTimeFormat.hourMin))
                     .padding(.bottom)
                     
                     RideDetailComponent(
@@ -129,7 +129,7 @@ struct DetailsView: View {
             }
             
             NavigationLink {
-                EditPublicationView(ride: $detailsVm.rideData)
+                EditPublicationView(ride: detailsVm.rideData, detailsVm: detailsVm)
             } label: {
                 Text(AppConstants.AppStrings.editPublication)
             }
@@ -150,6 +150,7 @@ struct DetailsView: View {
             }
         }
         .onAppear {
+            detailsVm.fromDetails = true
             detailsVm.getPassengersInfo(publishId: rideData.id)
         }
         .alert("", isPresented: $detailsVm.hasError) {

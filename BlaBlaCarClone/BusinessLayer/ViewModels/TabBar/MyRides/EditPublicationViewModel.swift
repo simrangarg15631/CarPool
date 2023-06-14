@@ -15,6 +15,9 @@ class EditPublicationViewModel: ObservableObject {
     @Published var isSuccess = false
     @Published var hasError = false
     @Published var errorMessage: APIError?
+    
+    @Published var success = false
+    @Published var anyError = false
 
     @Published var date = Date()
     @Published var time = Date()
@@ -68,14 +71,14 @@ class EditPublicationViewModel: ObservableObject {
                     
                 case .failure(let error):
                     self?.isLoading = false
-                    self?.hasError = true
-                    self?.isSuccess = false
+                    self?.anyError = true
+                    self?.success = false
                     self?.errorMessage = error as? APIError
                     
                 case .finished:
                     self?.isLoading = false
-                    self?.hasError = false
-                    self?.isSuccess = true
+                    self?.anyError = false
+                    self?.success = true
                 }
             }, receiveValue: { [weak self] data in
                 self?.rideData = data

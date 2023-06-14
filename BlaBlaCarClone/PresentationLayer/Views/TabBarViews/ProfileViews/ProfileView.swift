@@ -223,7 +223,7 @@ struct ProfileView: View {
                                  + " " +
                                  DateFormatterUtil.shared.datetimeFormat(
                                     dateTime: data.createdAt,
-                                    format: AppConstants.DateTimeFormat.monthYear)
+                                    format: DateTimeFormat.monthYear)
                             )
                                 .font(.subheadline)
                                 .opacity(0.6)

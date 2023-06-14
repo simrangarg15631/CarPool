@@ -22,8 +22,8 @@ class NetworkManager {
     /// - Returns: If success, returns userResponse? ( no response at success ), if failure returns Error
     func checkEmail(email: String) -> AnyPublisher<UserResponse?, Error> {
         
-        var url = AppConstants.ApiUrls.baseUrl + AppConstants.ApiUrls.checkEmailEndPoint
-        url += "?\(AppConstants.ApiKeys.email)=\(email)"
+        var url = ApiUrls.baseUrl + ApiUrls.checkEmailEndPoint
+        url += "?\(ApiKeys.email)=\(email)"
         
         guard let url = URL(string: url) else {
             print("error creating url")
@@ -60,12 +60,12 @@ class NetworkManager {
     
     func signUpLogIn(type: String, data: UserData) -> AnyPublisher<UserResponse, Error> {
         
-        var url = AppConstants.ApiUrls.baseUrl
+        var url = ApiUrls.baseUrl
         
         if type == AppConstants.ButtonLabels.signUp {
-            url += AppConstants.ApiUrls.users
+            url += ApiUrls.users
         } else if type == AppConstants.ButtonLabels.logIn {
-            url += AppConstants.ApiUrls.logInEndPoint
+            url += ApiUrls.logInEndPoint
         }
         
         guard let url = URL(string: url) else {
@@ -126,42 +126,42 @@ class NetworkManager {
     
     func sendOTP(phone: UserDetails) -> AnyPublisher<UserResponse, Error> {
         
-        let url = AppConstants.ApiUrls.baseUrl + AppConstants.ApiUrls.sendOTP
+        let url = ApiUrls.baseUrl + ApiUrls.sendOTP
         
         return baseApiManager.handleResponse(url: url, method: RequestMethods.post.rawValue, data: phone, code: 401)
     }
     
     func verifyPhone(data: UserDetails) -> AnyPublisher<UserResponse, Error> {
         
-        let url = AppConstants.ApiUrls.baseUrl + AppConstants.ApiUrls.verifyPhone
+        let url = ApiUrls.baseUrl + ApiUrls.verifyPhone
         
         return baseApiManager.handleResponse(url: url, method: RequestMethods.post.rawValue, data: data, code: 401)
     }
     
     func getUserInfo() -> AnyPublisher<UserResponse, Error> {
         
-        let url = AppConstants.ApiUrls.baseUrl + AppConstants.ApiUrls.users
+        let url = ApiUrls.baseUrl + ApiUrls.users
         
         return baseApiManager.get(url: url)
     }
     
     func getUserInfoById(id: Int) -> AnyPublisher<UserInfoResponse, Error> {
         
-        let url = AppConstants.ApiUrls.baseUrl + AppConstants.ApiUrls.users + "/\(id)"
+        let url = ApiUrls.baseUrl + ApiUrls.users + "/\(id)"
         
         return baseApiManager.get(url: url)
     }
     
     func editUserInfo(data: UserData) -> AnyPublisher<UserResponse, Error> {
         
-        let url = AppConstants.ApiUrls.baseUrl + AppConstants.ApiUrls.users
+        let url = ApiUrls.baseUrl + ApiUrls.users
         
         return baseApiManager.put(url: url, data: data)
     }
     
     func addImage(image: Data) -> AnyPublisher<UserResponse, Error> {
         
-        let url = AppConstants.ApiUrls.baseUrl + AppConstants.ApiUrls.addImage
+        let url = ApiUrls.baseUrl + ApiUrls.addImage
         
         guard let url = URL(string: url) else {
             print("error creating URL")
@@ -220,7 +220,7 @@ class NetworkManager {
     
     func addVehicle(data: VehicleData) -> AnyPublisher<VehicleRes, Error> {
         
-        let url = AppConstants.ApiUrls.baseUrl + AppConstants.ApiUrls.vehicles
+        let url = ApiUrls.baseUrl + ApiUrls.vehicles
         
         return baseApiManager.post(url: url, data: data)
         
@@ -228,71 +228,71 @@ class NetworkManager {
     
     func getVehicle() -> AnyPublisher<VehicleStatus, Error> {
         
-        let url = AppConstants.ApiUrls.baseUrl + AppConstants.ApiUrls.vehicles
+        let url = ApiUrls.baseUrl + ApiUrls.vehicles
         
         return baseApiManager.get(url: url)
     }
     
     func editVehicle(vehicleId: Int, data: VehicleData) -> AnyPublisher<VehicleRes, Error> {
         
-        let url = AppConstants.ApiUrls.baseUrl + AppConstants.ApiUrls.vehicles + "/\(vehicleId)"
+        let url = ApiUrls.baseUrl + ApiUrls.vehicles + "/\(vehicleId)"
         
         return baseApiManager.put(url: url, data: data)
     }
     
     func deleteVehicle(vehicleId: Int) -> AnyPublisher<UserResponse, Error> {
         
-        let url = AppConstants.ApiUrls.baseUrl + AppConstants.ApiUrls.vehicles + "/\(vehicleId)"
+        let url = ApiUrls.baseUrl + ApiUrls.vehicles + "/\(vehicleId)"
         
         return baseApiManager.delete(url: url, authToken: authToken)
     }
     
     func changePassword(data: ChangePassword) -> AnyPublisher<UserResponse, Error> {
         
-        let url = AppConstants.ApiUrls.baseUrl + AppConstants.ApiUrls.updatePassword
+        let url = ApiUrls.baseUrl + ApiUrls.updatePassword
         
         return baseApiManager.handleResponse(url: url, method: RequestMethods.patch.rawValue, data: data, code: 422)
     }
     
     func signOut() -> AnyPublisher<Response, Error> {
        
-        let url = AppConstants.ApiUrls.baseUrl + AppConstants.ApiUrls.signOut
+        let url = ApiUrls.baseUrl + ApiUrls.signOut
         
         return baseApiManager.delete(url: url, authToken: authToken)
     }
     
     func deleteAccount() -> AnyPublisher<UserResponse, Error> {
-        let url = AppConstants.ApiUrls.baseUrl + AppConstants.ApiUrls.users
+        let url = ApiUrls.baseUrl + ApiUrls.users
         return baseApiManager.delete(url: url, authToken: authToken)
     }
     
     func getRoute(originLat: String, originLon: String,
                   destLat: String, destLon: String) -> AnyPublisher<DirectionsResponse, Error> {
         
-        let url = AppConstants.DirectionsApi.baseUrl +
-        "?destination=\(destLat),\(destLon)&origin=\(originLat),\(originLon)&key=\(AppConstants.DirectionsApi.ApiKey)"
+        let url = DirectionsApi.baseUrl +
+        "?destination=\(destLat),\(destLon)&origin=\(originLat),\(originLon)&key=\(DirectionsApi.ApiKey)"
         
         return baseApiManager.get(url: url)
     }
     
     func publishRide(data: PublishRideData) -> AnyPublisher<PublishRideResponse, Error> {
         
-        let url = AppConstants.ApiUrls.baseUrl + AppConstants.ApiUrls.publish
+        let url = ApiUrls.baseUrl + ApiUrls.publish
         
         return baseApiManager.post(url: url, data: data)
     }
     
     func search(data: SearchRide) -> AnyPublisher<SearchRideResponse, Error> {
         
-        var url = AppConstants.ApiUrls.baseUrl + AppConstants.ApiUrls.search
+        var url = ApiUrls.baseUrl + ApiUrls.search
         
-        url += "?\(AppConstants.ApiKeys.sourceLon)=\(data.sourceLon)"
-        url += "&\(AppConstants.ApiKeys.sourceLat)=\(data.sourceLat)"
-        url += "&\(AppConstants.ApiKeys.destLon)=\(data.destLon)"
-        url += "&\(AppConstants.ApiKeys.destLat)=\(data.destLat)"
-        url += "&\(AppConstants.ApiKeys.passCount)=\(data.passCount)"
-        url += "&\(AppConstants.ApiKeys.date)=\(data.date)"
-        url += "&\(AppConstants.ApiKeys.orderBy)=\(data.orderBy)"
+        url += "?\(ApiKeys.sourceLon)=\(data.sourceLon)"
+        url += "&\(ApiKeys.sourceLat)=\(data.sourceLat)"
+        url += "&\(ApiKeys.destLon)=\(data.destLon)"
+        url += "&\(ApiKeys.destLat)=\(data.destLat)"
+        url += "&\(ApiKeys.passCount)=\(data.passCount)"
+        url += "&\(ApiKeys.date)=\(data.date)"
+        url += "&\(ApiKeys.orderBy)=\(data.orderBy)"
         
         return baseApiManager.get(url: url)
         
@@ -300,7 +300,7 @@ class NetworkManager {
     
     func bookRide(data: BookRideData) -> AnyPublisher<BookRideResponse, Error> {
         
-        let url = AppConstants.ApiUrls.baseUrl + AppConstants.ApiUrls.bookRide
+        let url = ApiUrls.baseUrl + ApiUrls.bookRide
         
         guard let url = URL(string: url) else {
             print("error creating URL")
@@ -355,55 +355,55 @@ class NetworkManager {
     
     func forgotPassword(data: UserDetails) -> AnyPublisher<Status, Error> {
         
-        let url = AppConstants.ApiUrls.baseUrl + AppConstants.ApiUrls.forgotPass
+        let url = ApiUrls.baseUrl + ApiUrls.forgotPass
         
         return baseApiManager.post(url: url, data: data)
     }
     
     func verifyOtp(data: UserDetails) -> AnyPublisher<Status, Error> {
         
-        let url = AppConstants.ApiUrls.baseUrl + AppConstants.ApiUrls.verifyOtp
+        let url = ApiUrls.baseUrl + ApiUrls.verifyOtp
         return baseApiManager.post(url: url, data: data)
     }
     
     func resetPassword(data: ChangePassword) -> AnyPublisher<Status, Error> {
-        let url = AppConstants.ApiUrls.baseUrl + AppConstants.ApiUrls.passwordReset
+        let url = ApiUrls.baseUrl + ApiUrls.passwordReset
         
         return baseApiManager.post(url: url, data: data)
     }
     
     func getAllBookedRides() -> AnyPublisher<BookedRides, Error> {
         
-        let url = AppConstants.ApiUrls.baseUrl + AppConstants.ApiUrls.bookedRides
+        let url = ApiUrls.baseUrl + ApiUrls.bookedRides
         
         return baseApiManager.get(url: url)
     }
     
     func getAllPublishedRides() -> AnyPublisher<PublishedRides, Error> {
         
-        let url = AppConstants.ApiUrls.baseUrl + AppConstants.ApiUrls.publish
+        let url = ApiUrls.baseUrl + ApiUrls.publish
         return baseApiManager.get(url: url)
     }
     
     func cancelBooking(data: CancelBookingModel) -> AnyPublisher<Status, Error> {
         
-        let url = AppConstants.ApiUrls.baseUrl + AppConstants.ApiUrls.cancelBooking
+        let url = ApiUrls.baseUrl + ApiUrls.cancelBooking
         return baseApiManager.post(url: url, data: data)
     }
     
     func cancelPublish(data: CancelBookingModel) -> AnyPublisher<Status, Error> {
         
-        let url = AppConstants.ApiUrls.baseUrl + AppConstants.ApiUrls.cancelPublish
+        let url = ApiUrls.baseUrl + ApiUrls.cancelPublish
         return baseApiManager.post(url: url, data: data)
     }
     
     func getPassengersInfo(publishId: Int) -> AnyPublisher<RidePassenger, Error> {
-        let url = AppConstants.ApiUrls.baseUrl + AppConstants.ApiUrls.publish + "/\(publishId)"
+        let url = ApiUrls.baseUrl + ApiUrls.publish + "/\(publishId)"
         return baseApiManager.get(url: url)
     }
     
     func updatePublishedRide(publishId: Int, data: UpdateRideData) -> AnyPublisher<PublishDetails, Error> {
-        let url = AppConstants.ApiUrls.baseUrl + AppConstants.ApiUrls.publish + "/\(publishId)"
+        let url = ApiUrls.baseUrl + ApiUrls.publish + "/\(publishId)"
         return baseApiManager.put(url: url, data: data)
     }
 }

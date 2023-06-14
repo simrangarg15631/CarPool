@@ -26,7 +26,7 @@ struct SignUpDOBView: View {
                 
                 Text(DateFormatterUtil.shared.formatDate(
                     date: vm.dateOfBirth,
-                    format: AppConstants.DateTimeFormat.dateMonYear))
+                    format: DateTimeFormat.dateMonYear))
                 .font(.headline)
                 .opacity(0.9)
                 .padding(6)

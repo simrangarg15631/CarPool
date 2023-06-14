@@ -11,7 +11,7 @@ struct ItinearyView: View {
     
     @ObservedObject var editVm: EditPublicationViewModel
     @Environment (\.dismiss) var dismiss
-    @Binding var ride: PublishDetails
+    var publishId: Int
     
     var body: some View {
         
@@ -19,15 +19,15 @@ struct ItinearyView: View {
             
             DatePicker(selection: $editVm.date, in: Date()..., displayedComponents: .date, label: {
                 
-                    Text(AppConstants.AppStrings.date)
-                        .font(.headline)
+                Text(AppConstants.AppStrings.date)
+                    .font(.headline)
             })
             .padding(.top)
             
             DatePicker(selection: $editVm.time, in: Date()..., displayedComponents: .hourAndMinute, label: {
                 
-                    Text(AppConstants.AppStrings.time)
-                        .font(.headline)
+                Text(AppConstants.AppStrings.time)
+                    .font(.headline)
             })
             .padding(.top)
             
@@ -84,19 +84,37 @@ struct ItinearyView: View {
             
             Spacer()
             
+            if editVm.isLoading {
+                ProgressView()
+                    .padding(.bottom, 20)
+            }
+            
             Button {
-//                editVm.editPublication(id: ride.id, data: UpdateData(source: editVm.source,
-//                            destination: editVm.destination,
-//                            sourceLongitude: editVm.sourceCoord.longitude,
-//                            sourceLatitude: editVm.sourceCoord.latitude,
-//                            destinationLongitude: editVm.destCoord.longitude,
-//                            destinationLatitude: editVm.destCoord.latitude,
-//                                                                     date: DateFormatterUtil.shared.formatDate(date: editVm.date), time: <#T##String?#>))
+                
+                editVm.editPublication(id: publishId, data: UpdateData(
+                    source: editVm.source,
+                    destination: editVm.destination,
+                    sourceLongitude: editVm.sourceCoord.longitude,
+                    sourceLatitude: editVm.sourceCoord.latitude,
+                    destinationLongitude: editVm.destCoord.longitude,
+                    destinationLatitude: editVm.destCoord.latitude,
+                    passengersCount: editVm.seats,
+                    date: DateFormatterUtil.shared.formatDate(date: editVm.date),
+                    time: DateFormatterUtil.shared.formatDate(
+                        date: editVm.time,
+                        format: DateTimeFormat.hourMin),
+                    setPrice: Double(editVm.price),
+                    aboutRide: editVm.aboutRide))
+                
             } label: {
                 ButtonLabelView(buttonLabel: AppConstants.ButtonLabels.save)
                     .cornerRadius(12)
             }
-            
+            .onChange(of: editVm.success) { newValue in
+                if newValue {
+                    self.dismiss()
+                }
+            }
         }
         .padding()
         .navigationTitle(AppConstants.AppHeadings.itineraryDetails)
@@ -110,24 +128,6 @@ struct ItinearyView: View {
                 .font(.subheadline)
             }
         }
-        .onAppear {
-            
-            editVm.date = DateFormatterUtil.shared.dateFromString(
-                date: ride.date,
-                format: AppConstants.DateTimeFormat.yearMonthDate) ?? Date()
-            
-            editVm.time = DateFormatterUtil.shared.dateFromString(
-                date: ride.time,
-                format: AppConstants.DateTimeFormat.hourMin) ?? Date()
-            
-            editVm.source = ride.source
-            editVm.sourceCoord.latitude = ride.sourceLatitude
-            editVm.sourceCoord.longitude = ride.sourceLongitude
-            
-            editVm.destination = ride.destination
-            editVm.destCoord.latitude = ride.destinationLatitude
-            editVm.destCoord.longitude = ride.destinationLongitude
-        }
         .fullScreenCover(isPresented: $editVm.srcPresent, content: {
             SearchLocationview(address: $editVm.source,
                                coordinates: $editVm.sourceCoord)
@@ -136,7 +136,17 @@ struct ItinearyView: View {
             SearchLocationview(address: $editVm.destination,
                                coordinates: $editVm.destCoord)
         }
-        
+        .onAppear {
+            editVm.success = false
+        }
+        .alert("", isPresented: $editVm.anyError) {
+            Button(AppConstants.ButtonLabels.ok, role: .cancel) {}
+
+        } message: {
+            if let error = editVm.errorMessage {
+                Text(error.localizedDescription)
+            }
+        }
     }
 }
 
@@ -144,7 +154,7 @@ struct ItinearyView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
             ItinearyView(editVm: EditPublicationViewModel(),
-                         ride: Binding.constant(PublishRideResponse.publishRideResponse.publish))
+                         publishId: 0)
         }
     }
 }

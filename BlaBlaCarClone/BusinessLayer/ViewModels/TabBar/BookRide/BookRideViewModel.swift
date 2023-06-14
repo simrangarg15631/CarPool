@@ -39,7 +39,7 @@ class BookRideViewModel: ObservableObject {
     
     func formatDate() -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = AppConstants.DateTimeFormat.dayDateMonth
+        dateFormatter.dateFormat = DateTimeFormat.dayDateMonth
         
         if date.formatted(date: .long, time: .omitted) == Date.now.formatted(date: .long, time: .omitted) {
             return AppConstants.AppStrings.today

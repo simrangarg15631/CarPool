@@ -12,7 +12,8 @@ struct EditPublicationView: View {
     @StateObject var editPublishVm = EditPublicationViewModel()
     @Environment (\.dismiss) var dismiss
     
-    @Binding var ride: PublishDetails
+    var ride: PublishDetails
+    @ObservedObject var detailsVm: DetailsViewModel
     
     var body: some View {
         
@@ -23,11 +24,11 @@ struct EditPublicationView: View {
                     NavigationLink {
                         switch option {
                         case .itinerary:
-                            ItinearyView(editVm: editPublishVm, ride: $ride)
+                            ItinearyView(editVm: editPublishVm, publishId: ride.id)
                         case .price:
-                            PriceSelectionView(ride: ride)
+                            PriceSelectionView(editVm: editPublishVm, publishId: ride.id)
                         case .seats:
-                            SeatsOptionsView(ride: ride)
+                            SeatsOptionsView(editVm: editPublishVm, publishId: ride.id)
                         }
                     } label: {
                         Text(option.rawValue)
@@ -91,6 +92,32 @@ struct EditPublicationView: View {
                 Text(error.localizedDescription)
             }
         }
+        .onAppear {
+            
+            if detailsVm.fromDetails {
+                detailsVm.fromDetails = false
+                editPublishVm.source = ride.source
+                editPublishVm.destination = ride.destination
+                
+                editPublishVm.sourceCoord.latitude = ride.sourceLatitude
+                editPublishVm.sourceCoord.longitude = ride.sourceLongitude
+                
+                editPublishVm.destCoord.latitude = ride.destinationLatitude
+                editPublishVm.destCoord.longitude = ride.destinationLongitude
+                
+                editPublishVm.date = DateFormatterUtil.shared.dateFromString(
+                    date: ride.date,
+                    format: DateTimeFormat.yearMonthDate) ?? Date()
+                
+                editPublishVm.time = DateFormatterUtil.shared.dateFromString(
+                    date: ride.time,
+                    format: DateTimeFormat.hourMin) ?? Date()
+                
+                editPublishVm.price = Int(ride.setPrice)
+                editPublishVm.aboutRide = ride.aboutRide ?? String()
+                editPublishVm.seats = ride.passengersCount
+            }
+        }
 
     }
 }
@@ -98,7 +125,8 @@ struct EditPublicationView: View {
 struct EditPublicationView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
-            EditPublicationView(ride: Binding.constant(PublishRideResponse.publishRideResponse.publish))
+            EditPublicationView(ride: PublishRideResponse.publishRideResponse.publish,
+                                detailsVm: DetailsViewModel())
         }
     }
 }

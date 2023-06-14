@@ -94,7 +94,7 @@ class BaseApiManager {
         if let media = image {
             body.append("--\(boundary + lineBreak)".data(using: .utf8) ?? Data())
             body.append("""
-Content-Disposition: form-data; name=\"\(AppConstants.ApiKeys.image)\"; filename=\"imagefile.jpeg\"\(lineBreak)
+Content-Disposition: form-data; name=\"\(ApiKeys.image)\"; filename=\"imagefile.jpeg\"\(lineBreak)
 """.data(using: .utf8) ?? Data())
             body.append("Content-Type: \(media) image/jpeg\(lineBreak + lineBreak)".data(using: .utf8) ?? Data())
             body.append(media)
