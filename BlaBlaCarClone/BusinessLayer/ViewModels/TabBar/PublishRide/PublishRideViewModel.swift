@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import MapKit
+import CoreLocation
 import Combine
 
 class PublishRideViewModel: ObservableObject {
@@ -24,7 +24,7 @@ class PublishRideViewModel: ObservableObject {
     @Published var destCoordinates: CLLocationCoordinate2D = CLLocationCoordinate2D()
     @Published var noOfSeats: Int = 1
     @Published var date = Date.now
-    @Published var price = String()
+    @Published var price = Int()
     @Published var vehicle: Vehicle?
     @Published var selectRoute: DirectionsResponse?
     @Published var aboutRide = String()
@@ -35,30 +35,40 @@ class PublishRideViewModel: ObservableObject {
     @Published var totalDistance = String()
     @Published var estimatedTime = String()
     @Published var timeValue = Int()
-    @Published var region = MKCoordinateRegion()
+    @Published var distance: Int?
     
     @Published var errorMessage: APIError?
     @Published var isLoading = false
     @Published var hasError = false
     @Published var isSuccess = false
     @Published var navigate = false
+    @Published var isPresented = false
     
     var publisher: AnyCancellable?
     var cancellable: AnyCancellable?
     let network = NetworkManager.shared
     
     func showButton() -> Bool {
-        if !startlocation.isEmpty && !destination.isEmpty && !price.isEmpty && vehicle != nil {
+        if !startlocation.isEmpty && !destination.isEmpty && vehicle != nil {
             return true
         }
         return false
     }
     
-    func getPathString(originLat: String, originLon: String, destLat: String, destLon: String) {
+    /// To get pathString to show polyline for route in map
+    /// - Parameters:
+    ///   - originLat: source latitude
+    ///   - originLon: source longitude
+    ///   - destLat: destination latitude
+    ///   - destLon: destination longitude
+    func getPathString() {
         
         self.isLoading = true
-        
-        publisher = network.getRoute(originLat: originLat, originLon: originLon, destLat: destLat, destLon: destLon)
+
+        publisher = network.getRoute(originLat: String(startCoordinates.latitude),
+                                     originLon: String(startCoordinates.longitude),
+                                     destLat: String(destCoordinates.latitude),
+                                     destLon: String(destCoordinates.longitude))
             .receive(on: DispatchQueue.main)
             .sink { completion in
                 switch completion {
@@ -81,6 +91,7 @@ class PublishRideViewModel: ObservableObject {
                         self?.pathString = routes[0].overviewPolyline.points
                         if !routes[0].legs.isEmpty {
                             self?.totalDistance = routes[0].legs[0].distance.text
+                            self?.distance = routes[0].legs[0].distance.value
                             self?.estimatedTime = routes[0].legs[0].duration.text
                             self?.timeValue = routes[0].legs[0].duration.value ?? 0
                         }
@@ -119,7 +130,7 @@ class PublishRideViewModel: ObservableObject {
     
     func makeCredentials() -> PublishRideData? {
         
-        guard let price = Double(price), let id = vehicle?.id else {
+        guard let id = vehicle?.id else {
             return nil
         }
         let time = secondsToHoursMinutesSeconds(timeValue)
@@ -148,10 +159,26 @@ class PublishRideViewModel: ObservableObject {
     func secondsToHoursMinutesSeconds(_ seconds: Int) -> (Int, Int, Int) {
         return (seconds / 3600, (seconds % 3600) / 60, (seconds % 3600) % 60)
     }
-        
-    func setRegion() {
-        self.region = MKCoordinateRegion(center: self.startCoordinates,
-                           span: MKCoordinateSpan(latitudeDelta: 0.03,
-                                                  longitudeDelta: 0.03))
+    
+    func reset() {
+        if dismiss {
+            startlocation = String()
+            destination = String()
+            date = Date()
+            vehicle = nil
+            noOfSeats = 1
+//            price = String()
+        }
+        dismiss = false
+    }
+    
+    func getPrice() {
+        if let distance {
+            let price = Double(distance/1000).rounded() * 3.0
+            self.price = Int((price/10).rounded() * 10)
+            isPresented = true
+        } else {
+            isPresented = false
+        }
     }
 }

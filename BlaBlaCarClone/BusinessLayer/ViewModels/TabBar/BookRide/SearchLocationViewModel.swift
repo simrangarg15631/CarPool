@@ -18,6 +18,7 @@ class SearchLocationViewModel: NSObject, ObservableObject {
     @Published var searchText = String()
     @Published var searchResults: [CLPlacemark]?
     @Published var location: CLLocation?
+    @Published var currentPlacemark: CLPlacemark?
     
     override init() {
         
@@ -71,6 +72,15 @@ extension SearchLocationViewModel: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let currentLocation = locations.first else { return }
         self.location = currentLocation
+        fetchCountryAndCity(for: currentLocation)
+    }
+    
+    func fetchCountryAndCity(for location: CLLocation?) {
+        guard let location = location else { return }
+        let geocoder = CLGeocoder()
+        geocoder.reverseGeocodeLocation(location) { (placemarks, _) in
+            self.currentPlacemark = placemarks?.first
+        }
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {

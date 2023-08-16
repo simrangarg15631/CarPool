@@ -17,6 +17,9 @@
 		B1229F102A3068280008146E /* MyRidesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1229F0F2A3068280008146E /* MyRidesViewModel.swift */; };
 		B1229F122A3079660008146E /* DateFormatterUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1229F112A3079660008146E /* DateFormatterUtil.swift */; };
 		B123CB732A1CEA9600E3D942 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B123CB722A1CEA9600E3D942 /* EditProfileView.swift */; };
+		B12A68832A84AC0300495E18 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12A68822A84AC0300495E18 /* ContentView.swift */; };
+		B12A68852A84AC3B00495E18 /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12A68842A84AC3B00495E18 /* UserSession.swift */; };
+		B12A68872A84BA7700495E18 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12A68862A84BA7700495E18 /* Router.swift */; };
 		B12B781C2A2AF2D4009F95AA /* BookRideData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12B781B2A2AF2D4009F95AA /* BookRideData.swift */; };
 		B12FC3472A29B403008CB37C /* PublishRideData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12FC3462A29B403008CB37C /* PublishRideData.swift */; };
 		B12FC3492A29B65B008CB37C /* PublishRideResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12FC3482A29B65B008CB37C /* PublishRideResponse.swift */; };
@@ -37,6 +40,8 @@
 		B144FCF12A31BEE800C31C0F /* UserDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B144FCF02A31BEE800C31C0F /* UserDetailsView.swift */; };
 		B144FCF42A31DE7B00C31C0F /* ItinearyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B144FCF32A31DE7B00C31C0F /* ItinearyView.swift */; };
 		B144FCF62A31F3B900C31C0F /* EditPublicationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B144FCF52A31F3B900C31C0F /* EditPublicationViewModel.swift */; };
+		B153576E2A89EB7F00EC86B9 /* PriceSelectCOmponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B153576D2A89EB7F00EC86B9 /* PriceSelectCOmponent.swift */; };
+		B15357702A89EC3000EC86B9 /* PriceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B153576F2A89EC3000EC86B9 /* PriceView.swift */; };
 		B1558BC12A0DF49700AA083F /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1558BC02A0DF49700AA083F /* LoginView.swift */; };
 		B16110302A2463A400C571D9 /* EditProfilePicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B161102F2A2463A400C571D9 /* EditProfilePicView.swift */; };
 		B16110322A24673100C571D9 /* EditProfilePicViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16110312A24673100C571D9 /* EditProfilePicViewModel.swift */; };
@@ -86,6 +91,7 @@
 		B19BECFE2A0CB2D00071901B /* SignUpPhoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19BECFD2A0CB2D00071901B /* SignUpPhoneView.swift */; };
 		B1AF6A982A0D05EB00C2A841 /* Validations.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1AF6A972A0D05EB00C2A841 /* Validations.swift */; };
 		B1AF6A9A2A0D064500C2A841 /* SecureInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1AF6A992A0D064500C2A841 /* SecureInputView.swift */; };
+		B1B2E90E2A86267300AA9366 /* CustomAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B2E90D2A86267300AA9366 /* CustomAnnotation.swift */; };
 		B1B758562A2069500048BFF3 /* EnterEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B758552A2069500048BFF3 /* EnterEmailView.swift */; };
 		B1B758592A20779B0048BFF3 /* SignUpPhoneviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B758582A20779B0048BFF3 /* SignUpPhoneviewModel.swift */; };
 		B1B7585B2A207ED10048BFF3 /* EnterOTPView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B7585A2A207ED10048BFF3 /* EnterOTPView.swift */; };
@@ -146,6 +152,9 @@
 		B1229F0F2A3068280008146E /* MyRidesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRidesViewModel.swift; sourceTree = "<group>"; };
 		B1229F112A3079660008146E /* DateFormatterUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatterUtil.swift; sourceTree = "<group>"; };
 		B123CB722A1CEA9600E3D942 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
+		B12A68822A84AC0300495E18 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B12A68842A84AC3B00495E18 /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
+		B12A68862A84BA7700495E18 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		B12B781B2A2AF2D4009F95AA /* BookRideData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookRideData.swift; sourceTree = "<group>"; };
 		B12FC3462A29B403008CB37C /* PublishRideData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishRideData.swift; sourceTree = "<group>"; };
 		B12FC3482A29B65B008CB37C /* PublishRideResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishRideResponse.swift; sourceTree = "<group>"; };
@@ -166,6 +175,8 @@
 		B144FCF02A31BEE800C31C0F /* UserDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsView.swift; sourceTree = "<group>"; };
 		B144FCF32A31DE7B00C31C0F /* ItinearyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItinearyView.swift; sourceTree = "<group>"; };
 		B144FCF52A31F3B900C31C0F /* EditPublicationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPublicationViewModel.swift; sourceTree = "<group>"; };
+		B153576D2A89EB7F00EC86B9 /* PriceSelectCOmponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceSelectCOmponent.swift; sourceTree = "<group>"; };
+		B153576F2A89EC3000EC86B9 /* PriceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceView.swift; sourceTree = "<group>"; };
 		B1558BC02A0DF49700AA083F /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		B161102F2A2463A400C571D9 /* EditProfilePicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfilePicView.swift; sourceTree = "<group>"; };
 		B16110312A24673100C571D9 /* EditProfilePicViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfilePicViewModel.swift; sourceTree = "<group>"; };
@@ -216,6 +227,7 @@
 		B19BECFD2A0CB2D00071901B /* SignUpPhoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpPhoneView.swift; sourceTree = "<group>"; };
 		B1AF6A972A0D05EB00C2A841 /* Validations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validations.swift; sourceTree = "<group>"; };
 		B1AF6A992A0D064500C2A841 /* SecureInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureInputView.swift; sourceTree = "<group>"; };
+		B1B2E90D2A86267300AA9366 /* CustomAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotation.swift; sourceTree = "<group>"; };
 		B1B758552A2069500048BFF3 /* EnterEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterEmailView.swift; sourceTree = "<group>"; };
 		B1B758582A20779B0048BFF3 /* SignUpPhoneviewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpPhoneviewModel.swift; sourceTree = "<group>"; };
 		B1B7585A2A207ED10048BFF3 /* EnterOTPView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterOTPView.swift; sourceTree = "<group>"; };
@@ -397,6 +409,7 @@
 				B16110422A24D21000C571D9 /* RideCreatedView.swift */,
 				B16110402A24CFC000C571D9 /* RidePublishedView.swift */,
 				B12FC34A2A2A0FFB008CB37C /* NoRides.swift */,
+				B153576F2A89EC3000EC86B9 /* PriceView.swift */,
 			);
 			path = PublishRideView;
 			sourceTree = "<group>";
@@ -473,6 +486,7 @@
 		B1918DE42A0BA37B007B73E1 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B12A68822A84AC0300495E18 /* ContentView.swift */,
 				B1918DD62A0B9D2B007B73E1 /* OnboardingView.swift */,
 				B1FA5EC12A1650FF00AA1E28 /* SignUpViews */,
 				B1B758572A2069550048BFF3 /* LoginViews */,
@@ -508,6 +522,9 @@
 				B1D5250E2A28983F009D998B /* MapView.swift */,
 				B1772EDF2A2DC8D000F509FC /* NavigationUtil.swift */,
 				B19182C82A3706130084C600 /* EnhancedTextField.swift */,
+				B12A68842A84AC3B00495E18 /* UserSession.swift */,
+				B12A68862A84BA7700495E18 /* Router.swift */,
+				B1B2E90D2A86267300AA9366 /* CustomAnnotation.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -561,6 +578,7 @@
 				B1C54E402A2F0D73005A51BF /* DriverProfile.swift */,
 				B144FCE82A31917600C31C0F /* NoRidesView.swift */,
 				B19A67212A331F0100444EF2 /* OtpFieldView.swift */,
+				B153576D2A89EB7F00EC86B9 /* PriceSelectCOmponent.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -837,6 +855,7 @@
 				B19182CB2A3721B20084C600 /* UpdateRideData.swift in Sources */,
 				B1B7585B2A207ED10048BFF3 /* EnterOTPView.swift in Sources */,
 				B16FEE732A275D1200CC8B3F /* ChangePasswordViewModel.swift in Sources */,
+				B12A68872A84BA7700495E18 /* Router.swift in Sources */,
 				B1229F102A3068280008146E /* MyRidesViewModel.swift in Sources */,
 				B161103A2A24A1A100C571D9 /* VehicleResponse.swift in Sources */,
 				B1D5250D2A2897AC009D998B /* SelectRouteView.swift in Sources */,
@@ -855,6 +874,7 @@
 				B16FEE6D2A273CC600CC8B3F /* VehicleInfoViewModel.swift in Sources */,
 				B1FA5ECA2A16532000AA1E28 /* ProfileView.swift in Sources */,
 				B14340B82A1358BE004E7A11 /* SeatsView.swift in Sources */,
+				B12A68852A84AC3B00495E18 /* UserSession.swift in Sources */,
 				B1EC05BB2A30A6F200A66CF1 /* UserInfoResponse.swift in Sources */,
 				B104484F2A2DEEF600FAC5C0 /* OTPViewModel.swift in Sources */,
 				B1D5250B2A288267009D998B /* PublishRowComponent.swift in Sources */,
@@ -864,6 +884,7 @@
 				B18BB84E2A1F823E0045D601 /* SignUpNameView.swift in Sources */,
 				B144FCF62A31F3B900C31C0F /* EditPublicationViewModel.swift in Sources */,
 				B1CB93632A14999D006A7830 /* CustomShape.swift in Sources */,
+				B153576E2A89EB7F00EC86B9 /* PriceSelectCOmponent.swift in Sources */,
 				B1DF12A72A1757750000D7E0 /* RideDetailsView.swift in Sources */,
 				B1C54E3F2A2F0936005A51BF /* MyRidesCardView.swift in Sources */,
 				B16FEE6F2A275BBA00CC8B3F /* ChangePasswordModel.swift in Sources */,
@@ -871,12 +892,14 @@
 				B144FCED2A31B29300C31C0F /* DetailsViewModel.swift in Sources */,
 				B144FCEF2A31BDB400C31C0F /* EditPublicationView.swift in Sources */,
 				B1B758562A2069500048BFF3 /* EnterEmailView.swift in Sources */,
+				B12A68832A84AC0300495E18 /* ContentView.swift in Sources */,
 				B1FA5EC82A16531500AA1E28 /* InboxView.swift in Sources */,
 				B16110412A24CFC000C571D9 /* RidePublishedView.swift in Sources */,
 				B1CB93612A1494FA006A7830 /* CarRideCardView.swift in Sources */,
 				B1B758612A20B4920048BFF3 /* SearchRide.swift in Sources */,
 				B161103C2A24C3CC00C571D9 /* VehicleInfoView.swift in Sources */,
 				B1918DD52A0B9D2B007B73E1 /* BlaBlaCarCloneApp.swift in Sources */,
+				B15357702A89EC3000EC86B9 /* PriceView.swift in Sources */,
 				B12B781C2A2AF2D4009F95AA /* BookRideData.swift in Sources */,
 				B1998CC42A1C99EE004B823C /* PhotoPickerView.swift in Sources */,
 				B16110342A2481FA00C571D9 /* AddVehicleView.swift in Sources */,
@@ -895,6 +918,7 @@
 				B1918DF12A0BAB44007B73E1 /* ButtonLabelView.swift in Sources */,
 				B1843F4F2A36E01C00236207 /* ItineraryViewModel.swift in Sources */,
 				B1918DFA2A0BC145007B73E1 /* SignUpDOBView.swift in Sources */,
+				B1B2E90E2A86267300AA9366 /* CustomAnnotation.swift in Sources */,
 				B1918DF82A0BC03B007B73E1 /* ProgressBarView.swift in Sources */,
 				B11092492A30429800ACB93D /* BookedRides.swift in Sources */,
 				B12FC34B2A2A0FFB008CB37C /* NoRides.swift in Sources */,

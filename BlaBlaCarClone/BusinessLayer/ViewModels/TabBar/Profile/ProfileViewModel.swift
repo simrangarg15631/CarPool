@@ -42,6 +42,7 @@ class ProfileViewModel: ObservableObject {
                     print("success")
                     self?.isLoading = false
                     self?.isSuccess = true
+                    UserSession.shared.deleteSession()
                 }
             }, receiveValue: { [weak self] data in
                 self?.userResponse = data
@@ -64,6 +65,7 @@ class ProfileViewModel: ObservableObject {
                     print("success")
                     self?.isLoading = false
                     self?.success = true
+                    UserSession.shared.deleteSession()
                 }
             }, receiveValue: { [weak self] data in
                 self?.response = data

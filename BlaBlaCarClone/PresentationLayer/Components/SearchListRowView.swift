@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import MapKit
+import CoreLocation
 
 struct SearchListRowView: View {
     
@@ -14,12 +14,19 @@ struct SearchListRowView: View {
     
     var body: some View {
         
-        VStack(alignment: .leading) {
+        HStack {
             
-            Text(searchResult.name ?? "")
+            Image(systemName: AppConstants.AppImages.mappin)
             
-            Text("\(searchResult.subLocality ?? "") \(searchResult.locality ?? "") \(searchResult.postalCode ?? "")")
-                .opacity(0.6)
+            VStack(alignment: .leading) {
+                
+                Text(searchResult.name ?? "")
+                    .font(.headline)
+                
+                Text("\(searchResult.subLocality ?? "") \(searchResult.locality ?? "") \(searchResult.postalCode ?? "")")
+                    .opacity(0.6)
+                    .font(.subheadline)
+            }
         }
     }
 }

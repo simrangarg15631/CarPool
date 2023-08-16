@@ -66,7 +66,7 @@ struct EnterEmailView: View {
             }
         }
         .navigationDestination(isPresented: $enterVm.isSuccess) {
-            OTPView(email: enterVm.email)
+            OTPView(enterVm: enterVm, email: enterVm.email)
         }
     }
 }

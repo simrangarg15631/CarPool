@@ -10,18 +10,18 @@ import SwiftUI
 import MapKit
 
 struct MapView: UIViewRepresentable {
-    
-    let region: MKCoordinateRegion
-//    let lineCoordinates: [CLLocationCoordinate2D]
+    let source: CLLocationCoordinate2D
+    let destination: CLLocationCoordinate2D
     let pathString: String
     
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
         mapView.delegate = context.coordinator
-        mapView.region = region
         let lineCoordinates = polyLineWithEncodedString(encodedString: pathString)
         let polyline = MKPolyline(coordinates: lineCoordinates, count: lineCoordinates.count)
         mapView.addOverlay(polyline)
+        setMapRegion(mapView: mapView, polyline: polyline)
+        addMarkers(mapView: mapView)
         return mapView
     }
     
@@ -30,6 +30,37 @@ struct MapView: UIViewRepresentable {
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
+    
+    func setMapRegion(mapView: MKMapView, polyline: MKPolyline) {
+        var regionRect = polyline.boundingMapRect
+
+        let wPadding = regionRect.size.width * 0.25
+        let hPadding = regionRect.size.height * 0.25
+                    
+        // Add padding to the region
+        regionRect.size.width += wPadding
+        regionRect.size.height += hPadding
+                    
+        // Center the region on the line
+        regionRect.origin.x -= wPadding / 2
+        regionRect.origin.y -= hPadding / 2
+
+        mapView.setRegion(MKCoordinateRegion(regionRect), animated: true)
+    }
+    
+    func addMarkers(mapView: MKMapView) {
+//        mapView.register(
+//                    CustomAnnotationView.self,
+//                    forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
+//
+//        let srcAnnotation = CustomAnnotation(coordinate: source)
+//        mapView.addAnnotation(srcAnnotation)
+        
+        let destAnnotation = MKPointAnnotation()
+        destAnnotation.coordinate = destination
+        mapView.addAnnotation(destAnnotation)
+    }
+    
     func polyLineWithEncodedString(encodedString: String) -> [CLLocationCoordinate2D] {
         var myRoutePoints = [CLLocationCoordinate2D]()
         let bytes = (encodedString as NSString).utf8String
@@ -79,10 +110,27 @@ class Coordinator: NSObject, MKMapViewDelegate {
         if let routePolyline = overlay as? MKPolyline {
             let renderer = MKPolylineRenderer(polyline: routePolyline)
             renderer.strokeColor = UIColor(Color.accentColor)
-            renderer.lineWidth = 8
+            renderer.lineWidth = 6
             return renderer
         }
         return MKOverlayRenderer()
+    }
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        
+        if annotation is CustomAnnotation {
+            guard let annotationView = mapView.dequeueReusableAnnotationView(
+                withIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier) as? CustomAnnotationView else {
+                
+                return CustomAnnotationView(annotation: annotation,
+                                            reuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
+            }
+            annotationView.annotation = annotation
+            return annotationView
+        } else {
+            return MKMarkerAnnotationView(annotation: annotation,
+                                          reuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
+        }
     }
     
 }

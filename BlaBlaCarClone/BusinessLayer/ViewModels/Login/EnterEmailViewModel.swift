@@ -35,12 +35,13 @@ class EnterEmailViewModel: ObservableObject {
                     print(error.localizedDescription)
                     self?.isLoading.toggle()
                     self?.hasError.toggle()
+                    self?.isSuccess = false
                     self?.errorMessage = error as? APIError
                     
                 case .finished:
                     print("verify phone")
                     self?.isLoading.toggle()
-                    self?.isSuccess.toggle()
+                    self?.isSuccess = true
                 }
                 
             }, receiveValue: { [weak self] data in

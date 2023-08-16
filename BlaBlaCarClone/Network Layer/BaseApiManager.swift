@@ -14,7 +14,7 @@ class BaseApiManager {
     static let shared = BaseApiManager()
     private init() {}
     
-    func get<T: Codable>(url: String) -> AnyPublisher<T, Error> {
+    func get<T: Codable>(url: String, authToken: String?) -> AnyPublisher<T, Error> {
         
         guard let url = URL(string: url) else {
             print("error creating URL")
@@ -25,11 +25,10 @@ class BaseApiManager {
         return serviceHelper.session(url: url,
                                      method: .get,
                                      body: nil,
-                                     value: "application/json",
-                                     headerField: "Content-Type")
+                                     token: authToken)
     }
     
-    func post<T: Codable, U: Codable>(url: String, data: U) -> AnyPublisher<T, Error> {
+    func post<T: Codable, U: Codable>(url: String, data: U, authToken: String?) -> AnyPublisher<T, Error> {
         
         guard let url = URL(string: url) else {
             print("error creating URL")
@@ -46,11 +45,10 @@ class BaseApiManager {
         return serviceHelper.session(url: url,
                                      method: .post,
                                      body: jsonData,
-                                     value: "application/json",
-                                     headerField: "Content-Type")
+                                     token: authToken)
     }
     
-    func put<T: Codable, U: Codable>(url: String, data: U) -> AnyPublisher<T, Error> {
+    func put<T: Codable, U: Codable>(url: String, data: U, authToken: String?) -> AnyPublisher<T, Error> {
         
         guard let url = URL(string: url) else {
             print("error creating URL")
@@ -67,8 +65,7 @@ class BaseApiManager {
         return serviceHelper.session(url: url,
                                      method: .put,
                                      body: jsonData,
-                                     value: "application/json",
-                                     headerField: "Content-Type")
+                                     token: authToken)
     }
     
     func delete<T: Codable>(url: String, authToken: String?) -> AnyPublisher<T, Error> {
@@ -82,8 +79,7 @@ class BaseApiManager {
         return serviceHelper.session(url: url,
                                      method: .delete,
                                      body: nil,
-                                     value: authToken,
-                                     headerField: "Authorization")
+                                     token: authToken)
     }
     
     func createDataBody(image: Data?, boundary: String) -> Data {
@@ -106,7 +102,7 @@ Content-Disposition: form-data; name=\"\(ApiKeys.image)\"; filename=\"imagefile.
         return body
     }
     
-    func handleResponse<T: Codable>(url: String, method: String, data: T, code: Int) ->
+    func handleResponse<T: Codable>(url: String, method: String, data: T, code: Int, authToken: String?) ->
     AnyPublisher<UserResponse, Error> {
         
         guard let url = URL(string: url) else {
@@ -124,6 +120,7 @@ Content-Disposition: form-data; name=\"\(ApiKeys.image)\"; filename=\"imagefile.
         var request = URLRequest(url: url)
         request.httpMethod = method
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue(authToken, forHTTPHeaderField: "Authorization")
         request.httpBody = jsonData
         
         return URLSession.shared.dataTaskPublisher(for: request)

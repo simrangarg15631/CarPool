@@ -7,7 +7,7 @@
 
 import Foundation
 import Combine
-import MapKit
+import CoreLocation
 
 class EditPublicationViewModel: ObservableObject {
     
@@ -61,8 +61,21 @@ class EditPublicationViewModel: ObservableObject {
             })
     }
     
-    func editPublication(id: Int, data: UpdateData) {
+    func editPublication(id: Int) {
         isLoading = true
+        
+        let data = UpdateData(
+            source: source,
+            destination: destination,
+            sourceLongitude: sourceCoord.longitude,
+            sourceLatitude: sourceCoord.latitude,
+            destinationLongitude: destCoord.longitude,
+            destinationLatitude: destCoord.latitude,
+            passengersCount: seats,
+            date: DateFormatterUtil.shared.formatDate(date: date),
+            time: DateFormatterUtil.shared.formatDate(date: time, format: DateTimeFormat.hourMin),
+            setPrice: Double(price),
+            aboutRide: aboutRide)
         
         publisher = network.updatePublishedRide(publishId: id, data: UpdateRideData(publish: data))
             .receive(on: DispatchQueue.main)
@@ -81,7 +94,7 @@ class EditPublicationViewModel: ObservableObject {
                     self?.success = true
                 }
             }, receiveValue: { [weak self] data in
-                self?.rideData = data
+                self?.rideData = data.publish
             })
     }
 }

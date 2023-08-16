@@ -87,18 +87,7 @@ struct SeatsOptionsView: View {
             }
             
             Button {
-                editVm.editPublication(id: publishId, data: UpdateData(
-                    source: editVm.source,
-                    destination: editVm.destination,
-                    sourceLongitude: editVm.sourceCoord.longitude,
-                    sourceLatitude: editVm.sourceCoord.latitude,
-                    destinationLongitude: editVm.destCoord.longitude,
-                    destinationLatitude: editVm.destCoord.latitude,
-                    passengersCount: editVm.seats,
-                    date: DateFormatterUtil.shared.formatDate(date: editVm.date),
-                    time: DateFormatterUtil.shared.formatDate(date: editVm.time, format: DateTimeFormat.hourMin),
-                    setPrice: Double(editVm.price),
-                    aboutRide: editVm.aboutRide))
+                editVm.editPublication(id: publishId)
             } label: {
                 ButtonLabelView(buttonLabel: AppConstants.ButtonLabels.save)
                     .cornerRadius(12)

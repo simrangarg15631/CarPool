@@ -85,7 +85,6 @@ enum TextFieldType {
     case otp2
     case otp3
     case otp4
-    case button
 }
 
 enum ViewType {

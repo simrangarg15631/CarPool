@@ -13,7 +13,6 @@ class NetworkManager {
     static let shared = NetworkManager()
     var serviceHelper = ServiceHelper.shared
     var baseApiManager = BaseApiManager.shared
-    var authToken: String?
     
     private init() {}
     
@@ -73,7 +72,7 @@ class NetworkManager {
             return Fail(error: APIError.badURL)
                 .eraseToAnyPublisher()
         }
-        
+        print(data)
         guard let jsonData = try? JSONEncoder().encode(data) else {
             print("error trying to convert model to jsonData")
             return Fail(error: APIError.parsing)
@@ -84,7 +83,7 @@ class NetworkManager {
         request.httpMethod = RequestMethods.post.rawValue
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = jsonData
-        
+        print(jsonData)
         return URLSession.shared.dataTaskPublisher(for: request)
         // handle URL errors (most likely not able to connect to the server)
             .mapError { error -> Error in
@@ -99,10 +98,9 @@ class NetworkManager {
                 }
                 
                 if (200..<300) ~= urlResponse.statusCode {
-                    self.authToken = urlResponse.value(forHTTPHeaderField: "Authorization")
-                    UserDefaults.standard.set(self.authToken, forKey: "Authorization")
+                    UserSession.shared.createSession(token: urlResponse.value(forHTTPHeaderField: "Authorization"))
                 }
-                
+                print(urlResponse)
                 return (data, urlResponse)
             }
         
@@ -128,35 +126,35 @@ class NetworkManager {
         
         let url = ApiUrls.baseUrl + ApiUrls.sendOTP
         
-        return baseApiManager.handleResponse(url: url, method: RequestMethods.post.rawValue, data: phone, code: 401)
+        return baseApiManager.handleResponse(url: url, method: RequestMethods.post.rawValue, data: phone, code: 401, authToken: UserSession.shared.sessionToken())
     }
     
     func verifyPhone(data: UserDetails) -> AnyPublisher<UserResponse, Error> {
         
         let url = ApiUrls.baseUrl + ApiUrls.verifyPhone
         
-        return baseApiManager.handleResponse(url: url, method: RequestMethods.post.rawValue, data: data, code: 401)
+        return baseApiManager.handleResponse(url: url, method: RequestMethods.post.rawValue, data: data, code: 401, authToken: UserSession.shared.sessionToken())
     }
     
     func getUserInfo() -> AnyPublisher<UserResponse, Error> {
         
         let url = ApiUrls.baseUrl + ApiUrls.users
-        
-        return baseApiManager.get(url: url)
+        print(UserSession.shared.sessionToken())
+        return baseApiManager.get(url: url, authToken: UserSession.shared.sessionToken())
     }
     
     func getUserInfoById(id: Int) -> AnyPublisher<UserInfoResponse, Error> {
         
         let url = ApiUrls.baseUrl + ApiUrls.users + "/\(id)"
         
-        return baseApiManager.get(url: url)
+        return baseApiManager.get(url: url, authToken: UserSession.shared.sessionToken())
     }
     
     func editUserInfo(data: UserData) -> AnyPublisher<UserResponse, Error> {
         
         let url = ApiUrls.baseUrl + ApiUrls.users
         
-        return baseApiManager.put(url: url, data: data)
+        return baseApiManager.put(url: url, data: data, authToken: UserSession.shared.sessionToken())
     }
     
     func addImage(image: Data) -> AnyPublisher<UserResponse, Error> {
@@ -180,7 +178,7 @@ class NetworkManager {
         
         var request = URLRequest(url: url)
         request.httpMethod = RequestMethods.put.rawValue
-        request.setValue(self.authToken, forHTTPHeaderField: "Authorization")
+        request.setValue(UserSession.shared.sessionToken(), forHTTPHeaderField: "Authorization")
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         request.httpBody = dataBody
         
@@ -196,7 +194,7 @@ class NetworkManager {
                 guard let urlResponse = response as? HTTPURLResponse else {
                     throw APIError.invalidResponse
                 }
-                
+                print(urlResponse)
                 return (data, urlResponse)
             }
         
@@ -222,7 +220,7 @@ class NetworkManager {
         
         let url = ApiUrls.baseUrl + ApiUrls.vehicles
         
-        return baseApiManager.post(url: url, data: data)
+        return baseApiManager.post(url: url, data: data, authToken: UserSession.shared.sessionToken())
         
     }
     
@@ -230,40 +228,40 @@ class NetworkManager {
         
         let url = ApiUrls.baseUrl + ApiUrls.vehicles
         
-        return baseApiManager.get(url: url)
+        return baseApiManager.get(url: url, authToken: UserSession.shared.sessionToken())
     }
     
     func editVehicle(vehicleId: Int, data: VehicleData) -> AnyPublisher<VehicleRes, Error> {
         
         let url = ApiUrls.baseUrl + ApiUrls.vehicles + "/\(vehicleId)"
         
-        return baseApiManager.put(url: url, data: data)
+        return baseApiManager.put(url: url, data: data, authToken: UserSession.shared.sessionToken())
     }
     
     func deleteVehicle(vehicleId: Int) -> AnyPublisher<UserResponse, Error> {
         
         let url = ApiUrls.baseUrl + ApiUrls.vehicles + "/\(vehicleId)"
         
-        return baseApiManager.delete(url: url, authToken: authToken)
+        return baseApiManager.delete(url: url, authToken: UserSession.shared.sessionToken())
     }
     
     func changePassword(data: ChangePassword) -> AnyPublisher<UserResponse, Error> {
         
         let url = ApiUrls.baseUrl + ApiUrls.updatePassword
         
-        return baseApiManager.handleResponse(url: url, method: RequestMethods.patch.rawValue, data: data, code: 422)
+        return baseApiManager.handleResponse(url: url, method: RequestMethods.patch.rawValue, data: data, code: 422, authToken: UserSession.shared.sessionToken())
     }
     
     func signOut() -> AnyPublisher<Response, Error> {
        
         let url = ApiUrls.baseUrl + ApiUrls.signOut
         
-        return baseApiManager.delete(url: url, authToken: authToken)
+        return baseApiManager.delete(url: url, authToken: UserSession.shared.sessionToken())
     }
     
     func deleteAccount() -> AnyPublisher<UserResponse, Error> {
         let url = ApiUrls.baseUrl + ApiUrls.users
-        return baseApiManager.delete(url: url, authToken: authToken)
+        return baseApiManager.delete(url: url, authToken: UserSession.shared.sessionToken())
     }
     
     func getRoute(originLat: String, originLon: String,
@@ -272,14 +270,14 @@ class NetworkManager {
         let url = DirectionsApi.baseUrl +
         "?destination=\(destLat),\(destLon)&origin=\(originLat),\(originLon)&key=\(DirectionsApi.ApiKey)"
         
-        return baseApiManager.get(url: url)
+        return baseApiManager.get(url: url, authToken: UserSession.shared.sessionToken())
     }
     
     func publishRide(data: PublishRideData) -> AnyPublisher<PublishRideResponse, Error> {
         
         let url = ApiUrls.baseUrl + ApiUrls.publish
         
-        return baseApiManager.post(url: url, data: data)
+        return baseApiManager.post(url: url, data: data, authToken: UserSession.shared.sessionToken())
     }
     
     func search(data: SearchRide) -> AnyPublisher<SearchRideResponse, Error> {
@@ -294,7 +292,7 @@ class NetworkManager {
         url += "&\(ApiKeys.date)=\(data.date)"
         url += "&\(ApiKeys.orderBy)=\(data.orderBy)"
         
-        return baseApiManager.get(url: url)
+        return baseApiManager.get(url: url, authToken: UserSession.shared.sessionToken())
         
     }
     
@@ -317,6 +315,7 @@ class NetworkManager {
         var request = URLRequest(url: url)
         request.httpMethod = RequestMethods.post.rawValue
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue(UserSession.shared.sessionToken(), forHTTPHeaderField: "Authorization")
         request.httpBody = jsonData
         
         return URLSession.shared.dataTaskPublisher(for: request)
@@ -357,53 +356,53 @@ class NetworkManager {
         
         let url = ApiUrls.baseUrl + ApiUrls.forgotPass
         
-        return baseApiManager.post(url: url, data: data)
+        return baseApiManager.post(url: url, data: data, authToken: UserSession.shared.sessionToken())
     }
     
     func verifyOtp(data: UserDetails) -> AnyPublisher<Status, Error> {
         
         let url = ApiUrls.baseUrl + ApiUrls.verifyOtp
-        return baseApiManager.post(url: url, data: data)
+        return baseApiManager.post(url: url, data: data, authToken: UserSession.shared.sessionToken())
     }
     
     func resetPassword(data: ChangePassword) -> AnyPublisher<Status, Error> {
         let url = ApiUrls.baseUrl + ApiUrls.passwordReset
         
-        return baseApiManager.post(url: url, data: data)
+        return baseApiManager.post(url: url, data: data, authToken: UserSession.shared.sessionToken())
     }
     
     func getAllBookedRides() -> AnyPublisher<BookedRides, Error> {
         
         let url = ApiUrls.baseUrl + ApiUrls.bookedRides
         
-        return baseApiManager.get(url: url)
+        return baseApiManager.get(url: url, authToken: UserSession.shared.sessionToken())
     }
     
     func getAllPublishedRides() -> AnyPublisher<PublishedRides, Error> {
         
         let url = ApiUrls.baseUrl + ApiUrls.publish
-        return baseApiManager.get(url: url)
+        return baseApiManager.get(url: url, authToken: UserSession.shared.sessionToken())
     }
     
     func cancelBooking(data: CancelBookingModel) -> AnyPublisher<Status, Error> {
         
         let url = ApiUrls.baseUrl + ApiUrls.cancelBooking
-        return baseApiManager.post(url: url, data: data)
+        return baseApiManager.post(url: url, data: data, authToken:UserSession.shared.sessionToken())
     }
     
     func cancelPublish(data: CancelBookingModel) -> AnyPublisher<Status, Error> {
         
         let url = ApiUrls.baseUrl + ApiUrls.cancelPublish
-        return baseApiManager.post(url: url, data: data)
+        return baseApiManager.post(url: url, data: data, authToken: UserSession.shared.sessionToken())
     }
     
     func getPassengersInfo(publishId: Int) -> AnyPublisher<RidePassenger, Error> {
         let url = ApiUrls.baseUrl + ApiUrls.publish + "/\(publishId)"
-        return baseApiManager.get(url: url)
+        return baseApiManager.get(url: url, authToken: UserSession.shared.sessionToken())
     }
     
-    func updatePublishedRide(publishId: Int, data: UpdateRideData) -> AnyPublisher<PublishDetails, Error> {
+    func updatePublishedRide(publishId: Int, data: UpdateRideData) -> AnyPublisher<PublishRideResponse, Error> {
         let url = ApiUrls.baseUrl + ApiUrls.publish + "/\(publishId)"
-        return baseApiManager.put(url: url, data: data)
+        return baseApiManager.put(url: url, data: data, authToken: UserSession.shared.sessionToken())
     }
 }

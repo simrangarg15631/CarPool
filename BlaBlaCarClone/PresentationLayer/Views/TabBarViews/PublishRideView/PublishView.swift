@@ -115,22 +115,6 @@ struct PublishView: View {
                     isPresented: $publishVm.isSeatsPresented)
             }
             
-            VStack(alignment: .leading) {
-                Text(AppConstants.AppStrings.priceSeat)
-                    .font(.subheadline)
-                    .opacity(0.7)
-                    .padding(.top, 20)
-                
-                TextField(AppConstants.AppStrings.rs, text: $publishVm.price)
-                    .padding(.top, 8)
-                    .keyboardType(.numberPad)
-                
-                Rectangle()
-                    .frame(maxWidth: .infinity, maxHeight: 1)
-                    .foregroundColor(.gray.opacity(0.8))
-            }
-            .frame(width: 160)
-            
             Spacer()
             
             if publishVm.isLoading {
@@ -145,13 +129,7 @@ struct PublishView: View {
             if publishVm.showButton() {
                 
                 Button {
-                    publishVm.setRegion()
-                    
-                    publishVm.getPathString(
-                        originLat: String(publishVm.startCoordinates.latitude),
-                        originLon: String(publishVm.startCoordinates.longitude),
-                        destLat: String(publishVm.destCoordinates.latitude),
-                        destLon: String(publishVm.destCoordinates.longitude))
+                    publishVm.getPathString()
                 } label: {
                     ButtonLabelView(buttonLabel: AppConstants.ButtonLabels.proceed)
                         .cornerRadius(10)
@@ -176,17 +154,7 @@ struct PublishView: View {
             SeatsView(noOfSeats: $publishVm.noOfSeats)
         })
         .onAppear {
-            
-            if publishVm.dismiss {
-                publishVm.startlocation = String()
-                publishVm.destination = String()
-                publishVm.date = Date()
-                publishVm.vehicle = nil
-                publishVm.noOfSeats = 1
-                publishVm.price = String()
-            }
-            publishVm.dismiss = false
-            
+            publishVm.reset()
         }
     }
 }

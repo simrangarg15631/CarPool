@@ -17,42 +17,84 @@ struct SearchLocationview: View {
     
     var body: some View {
         
-        VStack(alignment: .leading, spacing: 20) {
+        NavigationStack {
             
-            ImageButton(image: AppConstants.AppImages.multiply) {
-                self.dismiss()
-            }
-            .font(.title2)
-            
-            TextField(AppConstants.AppStrings.searchLoc, text: $locVm.searchText)
-                .padding(12)
-                .background(Color.gray.opacity(0.2))
-            
-            if !locVm.searchText.isEmpty {
-                if let searchRes = locVm.searchResults {
-                    
-                    List(searchRes, id: \.self) { res in
-                        Button {
-                            address = """
+            VStack {
+                
+                if !locVm.searchText.isEmpty {
+                    if let searchRes = locVm.searchResults {
+                        
+                        List(searchRes, id: \.self) { res in
+                            Button {
+                                address = """
 \(res.name ?? "") \(res.subLocality ?? "") \(res.locality ?? "") \(res.postalCode ?? "")
 """
-                            coordinates = res.location?.coordinate ?? CLLocationCoordinate2D()
-                            dismiss()
-                        } label: {
-                            SearchListRowView(searchResult: res)
+                                coordinates = res.location?.coordinate ?? CLLocationCoordinate2D()
+
+//                                    var recents = UserDefaults.standard.object(forKey: "RecentSearch") as? [[String:Any]] ?? []
+//                                    recents.append([])
+//                                    UserDefaults.standard.set(recents, forKey: "RecentSearch")
+//                                locVm.recentSearches.append(res)
+                                dismiss()
+                            } label: {
+                                SearchListRowView(searchResult: res)
+                            }
+                        }
+                        .listStyle(.plain)
+                    }
+                    
+                } else {
+                    
+                    Button {
+
+                        coordinates = locVm.location?.coordinate ?? CLLocationCoordinate2D()
+                        print(coordinates)
+                        address = """
+\(locVm.currentPlacemark?.name ?? "") \(locVm.currentPlacemark?.subLocality ?? "") \
+\(locVm.currentPlacemark?.locality ?? "") \(locVm.currentPlacemark?.postalCode ?? "")
+"""
+                        dismiss()
+                    } label: {
+                        HStack {
+                            Image(systemName: AppConstants.AppImages.location)
+                            Text(AppConstants.ButtonLabels.currLoc)
                         }
                     }
-                    .listStyle(.plain)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    // Add recent searches
+//                    var recents: [String] = UserDefaults.standard.object(forKey: "RecentSearch") as? [String] ?? []
+//
+//                    List(recents, id: \.self) { res in
+//                        Button {
+////                            address = """
+////\(res.name ?? "") \(res.subLocality ?? "") \(res.locality ?? "") \(res.postalCode ?? "")
+////"""
+////                            coordinates = res.location?.coordinate ?? CLLocationCoordinate2D()
+//                            dismiss()
+//                        } label: {
+//                            Text(res)
+////                            SearchListRowView(searchResult: res)
+//                        }
+//                    }
+//                    .listStyle(.plain)
                 }
                 
-            } else {
-                // Add recent searches
+                Spacer()
+                
             }
-            
-            Spacer()
-            
+            .padding(.horizontal)
+            .padding(.vertical, 8)
+            .toolbar(content: {
+                ToolbarItem(placement: .navigationBarLeading, content: {
+                    ImageButton(image: AppConstants.AppImages.multiply) {
+                        self.dismiss()
+                    }
+                })
+            })
         }
-        .padding()
+        .searchable(text: $locVm.searchText, prompt: AppConstants.AppStrings.searchLoc)
+        
     }
 }
 

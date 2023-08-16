@@ -46,6 +46,7 @@ struct DriverProfile: View {
                 HStack {
                     Image(systemName: AppConstants.AppImages.star)
                         .opacity(0.6)
+                        .foregroundColor(.yellow)
                     Text(String(format: "%0.1f", averageRating ?? 0.0))
                 }
                 

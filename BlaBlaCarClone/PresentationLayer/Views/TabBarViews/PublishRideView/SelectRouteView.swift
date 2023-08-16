@@ -14,7 +14,9 @@ struct SelectRouteView: View {
         
         VStack {
             
-            MapView(region: publishVm.region, pathString: publishVm.pathString)
+            MapView(source: publishVm.startCoordinates,
+                    destination: publishVm.destCoordinates,
+                    pathString: publishVm.pathString)
                 .edgesIgnoringSafeArea(.horizontal)
             
             HStack {
@@ -39,14 +41,17 @@ struct SelectRouteView: View {
             }
             .padding(.horizontal)
             
-            NavigationLink {
-                RideCreatedView(publishVm: publishVm)
+            Button {
+                publishVm.getPrice()
             } label: {
                 ButtonLabelView(buttonLabel: AppConstants.ButtonLabels.proceed)
                     .cornerRadius(12)
             }
             .frame(height: 100)
             .padding(.horizontal)
+            .navigationDestination(isPresented: $publishVm.isPresented, destination: {
+                PriceView(publishVm: publishVm)
+            })
             
         }
         .navigationTitle(AppConstants.AppHeadings.rideDetails)

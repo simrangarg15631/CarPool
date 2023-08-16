@@ -12,6 +12,7 @@ struct ProfileView: View {
     @StateObject var profileVm = ProfileViewModel()
     @Binding var userData: UserResponse
     @Binding var vehicles: [Vehicle]
+    @State private var deleteAlert: Bool = false
     
     var body: some View {
         
@@ -248,14 +249,14 @@ struct ProfileView: View {
                     Divider()
                     
                     Button {
-                        profileVm.deleteAccount()
+                        deleteAlert.toggle()
                     } label: {
                        Text(AppConstants.AppStrings.deleteAccount)
                             .foregroundColor(.red)
                     }
-                    .onChange(of: profileVm.success) { _ in
-                        NavigationUtil.popToRootView()
-                    }
+//                    .onChange(of: profileVm.success) { _ in
+//                        NavigationUtil.popToRootView()
+//                    }
                     
                     Divider()
                     
@@ -265,9 +266,9 @@ struct ProfileView: View {
                         Text(AppConstants.ButtonLabels.logOut)
                             .bold()
                     }
-                    .onChange(of: profileVm.isSuccess) { _ in
-                        NavigationUtil.popToRootView()
-                    }
+//                    .onChange(of: profileVm.isSuccess) { _ in
+//                        NavigationUtil.popToRootView()
+//                    }
                 }
                 .padding(.vertical)
             }
@@ -276,7 +277,18 @@ struct ProfileView: View {
         .navigationTitle(AppConstants.AppHeadings.profile)
         .navigationBarBackButtonHidden(true)
         .navigationBarTitleDisplayMode(.inline)
-        
+        .actionSheet(isPresented: $deleteAlert, content: {
+            
+            ActionSheet(
+                title: Text(""),
+                buttons: [
+                    .destructive(Text(AppConstants.AppStrings.deleteAccount)) {
+                        profileVm.deleteAccount()
+                    },
+                    .cancel()
+                ])
+
+        })
         // Show alert if there is error in updating profile
         .alert("", isPresented: $profileVm.hasError) {
             Button(AppConstants.ButtonLabels.ok, role: .cancel) {}

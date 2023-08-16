@@ -16,12 +16,12 @@ class ServiceHelper {
     func session<T: Codable>(url: URL,
                              method: RequestMethods,
                              body: Data?,
-                             value: String?,
-                             headerField: String) -> AnyPublisher<T, Error> {
+                             token: String?) -> AnyPublisher<T, Error> {
         
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
-        request.setValue(value, forHTTPHeaderField: headerField)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue(token, forHTTPHeaderField: "Authorization")
         request.httpBody = body
         
         return URLSession.shared.dataTaskPublisher(for: request)

@@ -14,6 +14,11 @@ class OTPViewModel: ObservableObject {
     @Published var otp2 = String()
     @Published var otp3 = String()
     @Published var otp4 = String()
+    @Published var otp1Emp: Bool = false
+    @Published var otp2Emp: Bool = false
+    @Published var otp3Emp: Bool = false
+    @Published var otp4Emp: Bool = false
+    
     @Published var errorMessage: APIError?
     
     @Published var isLoading = false

@@ -9,6 +9,7 @@ import Foundation
 
 struct UserResponse: Codable {
     var status: Status
+    var data: UserInfoResponse?
 }
 
 struct Status: Codable {

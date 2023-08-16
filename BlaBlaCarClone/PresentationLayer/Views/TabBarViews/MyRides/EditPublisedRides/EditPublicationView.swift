@@ -18,7 +18,7 @@ struct EditPublicationView: View {
     var body: some View {
         
         List {
-//            if ride.status == AppConstants.AppStrings.pending {
+            if ride.status == AppConstants.AppStrings.pending {
                 ForEach(Options.allCases, id: \.self) { option in
                     
                     NavigationLink {
@@ -51,7 +51,7 @@ struct EditPublicationView: View {
                 .onChange(of: editPublishVm.isSuccess) { _ in
                     self.dismiss()
                 }
-//            }
+            }
             
             Button {
                 

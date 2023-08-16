@@ -88,7 +88,7 @@ struct CarRideCardView: View {
         .frame(maxWidth: UIScreen.main.bounds.width - 50)
         .background(.white)
         .cornerRadius(20)
-        .shadow(color: Color.gray, radius: 2)
+        .shadow(color: Color.accentColor, radius: 2)
         
     }
 }

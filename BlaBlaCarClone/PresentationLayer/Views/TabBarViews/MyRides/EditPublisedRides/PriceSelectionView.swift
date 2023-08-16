@@ -17,41 +17,7 @@ struct PriceSelectionView: View {
         
         VStack {
             
-            HStack {
-                ImageButton(image: AppConstants.AppImages.minus) {
-                    editVm.price -= 10
-                }
-                .font(.largeTitle)
-                .disabled(editVm.price == 70)
-                
-                Spacer()
-                
-                Text("Rs. \(editVm.price)")
-                    .font(.system(size: 42))
-                    .bold()
-                    .foregroundColor(editVm.price > 130 ? .red : .green)
-                
-                Spacer()
-                
-                ImageButton(image: AppConstants.AppImages.plus) {
-                    editVm.price += 10
-                }
-                .font(.largeTitle)
-                .disabled(editVm.price == 160)
-            }
-            .padding(.top, 50)
-            
-            if editVm.price > 130 {
-                
-                HStack {
-                    
-                    Image(systemName: AppConstants.AppImages.exclamation)
-                    Text(AppConstants.AppStrings.maxPriceLimit)
-                }
-                .padding(.top, 8)
-                .font(.subheadline)
-                .fontWeight(.medium)
-            }
+            PriceSelectCOmponent(price: $editVm.price)
             
             Spacer()
             
@@ -61,18 +27,7 @@ struct PriceSelectionView: View {
             }
             
             Button {
-                editVm.editPublication(id: publishId, data: UpdateData(
-                    source: editVm.source,
-                    destination: editVm.destination,
-                    sourceLongitude: editVm.sourceCoord.longitude,
-                    sourceLatitude: editVm.sourceCoord.latitude,
-                    destinationLongitude: editVm.destCoord.longitude,
-                    destinationLatitude: editVm.destCoord.latitude,
-                    passengersCount: editVm.seats,
-                    date: DateFormatterUtil.shared.formatDate(date: editVm.date),
-                    time: DateFormatterUtil.shared.formatDate(date: editVm.time, format: DateTimeFormat.hourMin),
-                    setPrice: Double(editVm.price),
-                    aboutRide: editVm.aboutRide))
+                editVm.editPublication(id: publishId)
             } label: {
                 ButtonLabelView(buttonLabel: AppConstants.ButtonLabels.save)
                     .cornerRadius(12)

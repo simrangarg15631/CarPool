@@ -25,7 +25,7 @@ struct DirectionsApi {
 
 struct ApiUrls {
     
-    static let baseUrl = "https://a7c6-112-196-113-2.ngrok-free.app"
+    static let baseUrl = "http://192.180.2.134:3001"
     static let users = "/users"
     static let logInEndPoint = "/users/sign_in"
     static let checkEmailEndPoint = "/email_check"
@@ -295,5 +295,7 @@ Find the perfect ride from thousands of destinations, or publish to share your t
         static let myRides = "MyRides"
         static let inbox = "Inbox"
         static let exclamation = "exclamationmark.circle"
+        static let location = "location.fill"
+        static let mappin = "mappin"
     }
 }

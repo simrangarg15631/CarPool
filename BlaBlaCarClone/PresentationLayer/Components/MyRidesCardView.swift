@@ -23,14 +23,16 @@ struct MyRidesCardView: View {
                 
                 Text(rideData.source.capitalized)
                     .font(.headline)
-                    .frame(width: 78, height: 15)
+//                    .frame(width: 78, height: 15)
+                    .lineLimit(3)
                 
                 Image(systemName: AppConstants.AppImages.arrow)
                     .font(.subheadline)
                 
                 Text(rideData.destination.capitalized)
                     .font(.headline)
-                    .frame(width: 78, height: 15, alignment: .leading)
+//                    .frame(width: 78, height: 15, alignment: .leading)
+                    .lineLimit(3)
                 
                 Spacer()
                 
@@ -40,6 +42,7 @@ struct MyRidesCardView: View {
                     .bold()
                     .padding(8)
                     .background(cardVm.color.opacity(0.1))
+                    .layoutPriority(1)
             }
             
             if published {
@@ -88,7 +91,7 @@ format: DateTimeFormat.dateMonYearTime))
         .frame(maxWidth: UIScreen.main.bounds.width - 50)
         .background(.white)
         .cornerRadius(20)
-        .shadow(color: Color.gray, radius: 2)
+        .shadow(color: Color.accentColor, radius: 2)
         .onAppear {
             if published {
                 cardVm.checkStatus(status: rideData.status)
@@ -104,7 +107,7 @@ format: DateTimeFormat.dateMonYearTime))
 
 struct MyRidesCardView_Previews: PreviewProvider {
     static var previews: some View {
-        MyRidesCardView(published: true,
+        MyRidesCardView(published: false,
                         rideData: PublishRideResponse.publishRideResponse.publish,
                         seats: 2,
                         status: AppConstants.AppStrings.cancelBooking)

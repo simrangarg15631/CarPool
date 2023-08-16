@@ -61,8 +61,8 @@ struct PublishDetails: Codable {
 extension PublishRideResponse {
     static let publishRideResponse = PublishRideResponse(code: 0, publish:
                                                             PublishDetails(id: 0,
-                                                                           source: "Chennaifgergrgrg3g34gf35g4rg",
-                                                                           destination: "Mohaliryerhyeu5u46u46uhtghjet",
+                                                                           source: "Chennai",
+                                                                           destination: "Mohali",
                                                                            passengersCount: 1,
                                                                            addCity: "Mp",
                                                                            date: "2023-05-03",

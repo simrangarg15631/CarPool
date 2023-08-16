@@ -18,11 +18,11 @@ class SignUpViewModel: ObservableObject {
     @Published var firstName = String()
     @Published var lastName = String()
     @Published var dateOfBirth = Date()
-    @Published var gender = String()
+    @Published var gender = AppConstants.AppStrings.male
     @Published var phoneNumber = String()
     
     @Published var currentValue: Float = 1
-    @Published var totalValue: Float = 4
+    @Published var totalValue: Float = 3
     
     @Published var phoneMessage = String()
     @Published var errorMessage: APIError?

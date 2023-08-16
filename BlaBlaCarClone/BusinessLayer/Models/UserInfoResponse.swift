@@ -9,7 +9,7 @@ import Foundation
 
 struct UserInfoResponse: Codable {
     
-    var code: Int
+    var code: Int?
     var user: DataResponse
     var imageUrl: URL?
     

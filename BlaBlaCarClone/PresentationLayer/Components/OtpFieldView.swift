@@ -19,25 +19,15 @@ struct OtpFieldView: View {
                 .foregroundColor(.gray.opacity(0.4))
                 .frame(height: 48)
             
-            EnhancedTextField(placeholder: "", text: $value) { onEmpty in
-                print("Backspace pressed, onEmpty? \(onEmpty) at \(Date().ISO8601Format())")
+            EnhancedTextField(text: $value, keyboardType: .numberPad) { onEmpty in
                 if onEmpty {
                     isEmpty.toggle()
                 }
             }
             .padding(12)
             .background(.clear)
-            .autocorrectionDisabled(true)
-            .keyboardType(.numberPad)
-            .frame(width: 40, height: 48)
-            
-            //            TextField("", text: $value)
-            //                .padding(12)
-            //                .background(.clear)
-            //                .autocorrectionDisabled(true)
-            //                .keyboardType(.numberPad)
-            //                .frame(width: 40)
-            
+            .frame(height: 48)
+            .multilineTextAlignment(.center)
         }
     }
 }

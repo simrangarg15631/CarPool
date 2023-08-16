@@ -12,7 +12,7 @@ struct BlaBlaCarCloneApp: App {
     
     var body: some Scene {
         WindowGroup {
-            OnboardingView()
+            ContentView()
         }
     }
 }

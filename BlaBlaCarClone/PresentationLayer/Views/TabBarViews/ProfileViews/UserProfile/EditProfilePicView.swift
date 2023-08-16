@@ -20,7 +20,7 @@ struct EditProfilePicView: View {
             Headingview(title: AppConstants.AppHeadings.editProfilePic)
                 .offset(y: -30)
             
-            PhotoPickerView(profilePic: $editPicVm.profilePic)
+            PhotoPickerView(profilePic: $editPicVm.profilePic, imageURL: userData.status.imageUrl)
             
             Spacer()
             
@@ -68,7 +68,7 @@ struct EditProfilePicView: View {
         })
         .onDisappear {
             if editPicVm.isSuccess {
-                userData = editPicVm.userResponse
+                userData.status.imageUrl = editPicVm.userResponse.data?.imageUrl
             }
         }
     }
